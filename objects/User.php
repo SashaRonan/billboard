@@ -36,7 +36,10 @@ class User extends Database
         while ($numRows = Database::fetch($selectUserQuery)) {
             $users [] = $numRows;
         }
-        return $users;
+//        echo "<br>";
+//        print_r($users);
+//        echo "</br>";
+        return ($users);
     }
 
     //функция для создания нового пользователя
@@ -95,7 +98,7 @@ class User extends Database
 
     }
 
-    //функция для обновления данных конкретного пользователя
+    //функция для удаления конкретного пользователя
     public function deleteUser($url)
     {
 

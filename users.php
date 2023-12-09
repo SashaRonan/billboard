@@ -15,7 +15,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $userQuery = $user->getUsersList();
     }
 
-    echo ($userQuery);
+//    echo ($userQuery);
+    echo "<br>";
+    print_r($userQuery);
+    echo "</br>";
 
 
     // Записываем нового пользователя в БД

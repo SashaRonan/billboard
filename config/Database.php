@@ -33,4 +33,8 @@ class Database
         return mysqli_num_rows($query);
     }
 
+    public static function escape ($parameter) {
+        return mysqli_real_escape_string(self::$connection, $parameter);
+    }
+
 }
