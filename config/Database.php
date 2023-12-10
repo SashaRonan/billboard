@@ -13,6 +13,7 @@ class Database
         } elseif (!self::$connection) {
             die('Ошибка подключения к базе данных: ' . mysqli_connect_error());
         }
+        return self::$connection;
     }
 
     // функция для формирования тела запроса БД

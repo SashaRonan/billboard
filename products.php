@@ -6,11 +6,9 @@ $product = new \objects\Product();
 //Запросы с БД
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
-
     if (isset($_GET['productId'])) {  //Поиск конкретного товар по id
         $productId = $_GET['productId'];
         $productQuery = $product->getOneProduct($productId);
-
     } elseif (isset($_GET['userId'])) {  //Поиск всех товары одного пользователя по id
         $userId = $_GET['userId'];
         $productQuery = $product->getAllProductsOfUser($userId);
@@ -20,11 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     } else {   //Всего списка товаров с БД
         $productQuery = $product->getUProductsList();
     }
-
-    echo "<br>";
-    print_r($productQuery);
-    echo "</br>";
-
+    print_r($productQuery) ;
 
 // Записываем нового пользователя в БД
 } elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -50,18 +44,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     } else {
         $productURL = '';
     }
-
-
     $product->createProduct($productName, $description, $userId, $price, $productURL);
-
 
 //Обновляем данные пользователя с указанным ID
 } elseif ($_SERVER['REQUEST_METHOD'] == "PUT") {
-    print_r($product->updateProduct())  ;
-
+    $product->updateProduct()  ;
 
 //Удаляем пользователя с указанным ID
 } elseif ($_SERVER['REQUEST_METHOD'] == "DELETE") {
-
     $product->deleteProduct();
 }

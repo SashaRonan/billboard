@@ -17,18 +17,20 @@ class Product extends Database
     //функция для получения одного конкретного товара по ID с БД
     public function getOneProduct($productId)
     {
-        $selectProductQuery = Database::query("SELECT `product_name`,`description`,`price`,`product_img`,`name`,`phone` FROM `products` LEFT OUTER JOIN `users` ON `select_user_id` = `user_id` WHERE `select_user_id` = '$productId' ");
-        $product = Database::fetch($selectProductQuery);
-        if (mysqli_num_rows($selectProductQuery) == 0) {
+        $stmt = mysqli_prepare(Database::connect(), "SELECT `product_name`,`description`,`price`,`product_img`,`name`,`phone` FROM `products` LEFT OUTER JOIN `users` ON `select_user_id` = `user_id` WHERE `product_id` = ? ");
+        mysqli_stmt_bind_param($stmt, "i", $productId);
+        mysqli_stmt_execute($stmt);
+        $product = mysqli_stmt_get_result($stmt);
+        if (mysqli_stmt_num_rows($stmt) == 0) {
             echo "Поиск не дал результатов";
         }
-        return $product;
+        return mysqli_fetch_assoc($product);
     }
 
     //функция для получения полного списка товаров с БД
     public function getUProductsList()
     {
-        $selectProductsQuery = Database::query("SELECT `product_name`,`description`,`price`,`product_img`,`name`,`phone` FROM `products` LEFT OUTER JOIN `users` ON `select_user_id` = `user_id` ");
+        $selectProductsQuery = Database::query("SELECT `product_name`,`description`,`price`,`product_img`,`name`,`phone` FROM `products` LEFT OUTER JOIN `users` ON `select_user_id` = `user_id`");
         $numRows = Database::getNumRows($selectProductsQuery);
         while ($numRows = Database::fetch($selectProductsQuery)) {
             $products [] = $numRows;
@@ -39,34 +41,41 @@ class Product extends Database
     //функция для поиска всех товаров конкретного пользователя с БД
     public function getAllProductsOfUser($userId)
     {
-        $selectProductsQuery = Database::query("SELECT `product_name`,`description`,`price`,`product_img`,`name`,`phone` FROM `products` LEFT OUTER JOIN `users` ON `select_user_id` = `user_id` WHERE `user_id` = '$userId' ");
-        $numRows = Database::getNumRows($selectProductsQuery);
-        while ($numRows = Database::fetch($selectProductsQuery)) {
-            $products [] = $numRows;
+        $stmt = mysqli_prepare(Database::connect(), "SELECT `product_name`,`description`,`price`,`product_img`,`name`,`phone` FROM `products` LEFT OUTER JOIN `users` ON `select_user_id` = `user_id` WHERE `user_id` = ? ");
+        mysqli_stmt_bind_param($stmt, "i", $userId);
+        mysqli_stmt_execute($stmt);
+        $products= mysqli_stmt_get_result($stmt);
+        $numRows = mysqli_num_rows($products);
+        while ($numRows = Database::fetch($products)) {
+            $productsList []= $numRows;
         }
-        return ($products);
+        print_r($productsList);
+
     }
 
-    //функция для товаров по названию
+    //функция для поиска товаров по названию
     public function getAllProductsByName($productName)
     {
-        $selectProductsQuery = Database::query("SELECT * FROM `products` WHERE `product_name` LIKE '%$productName%'");
-        $numRows = Database::getNumRows($selectProductsQuery);
-        while ($numRows = Database::fetch($selectProductsQuery)) {
-            $products [] = $numRows;
+        $stmt = mysqli_prepare(Database::connect(), "SELECT `product_name`,`description`,`price`,`product_img`,`name`,`phone` FROM `products` LEFT OUTER JOIN `users` ON `select_user_id` = `user_id` WHERE `product_name` LIKE ?");
+        $productName = '%' . $productName . '%';
+        mysqli_stmt_bind_param($stmt, "s", $productName);
+        mysqli_stmt_execute($stmt);
+        $products= mysqli_stmt_get_result($stmt);
+        $numRows = mysqli_num_rows($products);
+        while ($numRows = Database::fetch($products)) {
+            $productList [] = $numRows;
         }
-        return ($products);
+        return ($productList);
+
     }
 
 //    функция для нового товара в БД
     public function createProduct($productName, $description, $userId, $price, $productURL)
     {
-
         if (!empty($productName) && !empty($description) && !empty($userId) && !empty($price)) {
-
-            Database::query("INSERT INTO `products` (`product_name`, `description`, `select_user_id`, `price`, `product_img`) VALUES ('$productName', '$description', '$userId', '$price', '$productURL')");
-
-
+            $stmt = mysqli_prepare(Database::connect(), "INSERT INTO `products` (`product_name`, `description`, `select_user_id`, `price`, `product_img`) VALUES (?, ?, ?, ?, ?)");
+            mysqli_stmt_bind_param($stmt, "ssiis", $productName, $description, $userId, $price, $productURL);
+            mysqli_stmt_execute($stmt);
             echo "Cоздан новый товар: Название: " . $productName . " Описание: " . $description . " ID продавца: " . $userId . " Цена: " . $price . " Ссылка на изображение: " . $productURL;
 //            echo json_encode(["result" => true]);
         } else {
@@ -88,7 +97,6 @@ class Product extends Database
             if (count($item) == 2) {
                 $_PUT[urldecode($item[0])] = urldecode($item[1]);
             }
-
         }
 
         print_r($_PUT);
@@ -122,7 +130,6 @@ class Product extends Database
                 $queryString = "`price`='" . $_PUT['price'] . "'";
             }
 
-
             if (!empty($_PUT["productURL"]) && !empty($queryString)) {
                 $queryString = $queryString . ", `product_img`='" . $_PUT['productURL'] . "'";
             } elseif (!empty($_PUT["productURL"]) && empty($queryString)) {
@@ -131,16 +138,13 @@ class Product extends Database
 
             echo $queryString;
             Database::query("UPDATE `products` SET" . $queryString . "WHERE" . $productIdString);
-
             echo "Параметры товара с ID = " . $_PUT['productId'] . " обновлены";
-
 //              echo json_encode(["result" => true]);
 
         } else {
             echo "Не указан ID товара";
 //            echo json_encode(["result" => false, "messege" => "Не верен параметр name "]);
         }
-
     }
 
     //функция для удаления конкретного товара по его ID
@@ -155,12 +159,12 @@ class Product extends Database
             if (count($item) == 2) {
                 $_DELETE[urldecode($item[0])] = urldecode($item[1]);
             }
-
         }
 
         if (isset($_DELETE['productId'])) {
-            $deleteQuery = "DELETE FROM `products` WHERE `product_id` = " . $_DELETE['productId'];
-            Database::query($deleteQuery);
+            $stmt = mysqli_prepare(Database::connect(), "DELETE FROM `products` WHERE `product_id` = ?");
+            mysqli_stmt_bind_param($stmt, "i", $_DELETE['productId']);
+            mysqli_stmt_execute($stmt);
             echo "Товар с ID = " . $_DELETE['productId'] . " удален";
 //                echo json_encode(["result" => true]);
         } else {
@@ -168,8 +172,4 @@ class Product extends Database
 //            echo json_encode(["result" => false, "messege" => "Не верен параметр name "]);
         }
     }
-
 }
-
-
-
