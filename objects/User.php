@@ -47,9 +47,10 @@ class User extends Database
             $stmt = mysqli_prepare(Database::connect(), "INSERT INTO `users` (`name`, `email`, `phone`, `password`) VALUES (?, ?, ?, ?)");
             mysqli_stmt_bind_param($stmt, "ssis", $name, $email, $phone, $password);
             mysqli_stmt_execute($stmt);
-            echo "Cоздан новый пользователь: Имя: " . $name . " Почта: " . $email . " Номер телефона: " . $phone . " Пароль: " . $password;
+           $messege =  "Cоздан новый пользователь: Имя: " . $name . " Почта: " . $email . " Номер телефона: " . $phone . " Пароль: " . $password;
+           return ($messege);
         } else {
-            echo "Заполните все поля";
+//            echo "Заполните все поля";
         }
     }
 

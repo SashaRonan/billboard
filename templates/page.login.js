@@ -1,55 +1,21 @@
-(function (app) {
+ (function (app) {
     app.PageLogin = {
         draw: function () {
 
-            // Создаем основной контейнер "content"
-            let content = document.createElement('div');
-            content.classList.add('content');
+            let content         = create_content_div('content_login-reg');
+            let contentText = create_content_text('content_text', 'Вход')
 
-            // Создаем заголовок "Вход"
-            let contentText = document.createElement('h2');
-            contentText.classList.add('content_text');
-            contentText.textContent = 'Вход';
+            let inputBox         = create_form ('input_box', 'POST');
 
-            // Создаем инпуты
-            let inputBox = document.createElement('div');
-            inputBox.classList.add('input_box');
-
-            // Инпут для ввода почты
-            let inputBlock1 = document.createElement('div');
-            inputBlock1.classList.add('input_block');
-
-            let input1 = document.createElement('input');
-            input1.classList.add('input');
-            input1.setAttribute('type', 'email');
-            input1.setAttribute('id', 'email');
-            input1.setAttribute('name', 'email');
-            input1.setAttribute('placeholder', 'Введите ваш email');
-
-            let label1 = document.createElement('label');
-            label1.classList.add('input_label');
-            label1.setAttribute('for', 'email');
-            label1.textContent = 'E-mail';
-
+            let inputBlock1      = create_input_block('input_block');
+            let input1         = create_input('input', 'email', 'email', 'email', 'Введите ваш email');
+            let label1         = create_label_forInput('input_label', 'email', 'E-mail');
             inputBlock1.append(input1);
             inputBlock1.append(label1);
 
-            // Инпут для ввода пароля
-            let inputBlock2 = document.createElement('div');
-            inputBlock2.classList.add('input_block');
-
-            let input2 = document.createElement('input');
-            input2.classList.add('input');
-            input2.setAttribute('type', 'password');
-            input2.setAttribute('id', 'password');
-            input2.setAttribute('name', 'password');
-            input2.setAttribute('placeholder', 'Введите ваш пароль');
-
-            let label2 = document.createElement('label');
-            label2.classList.add('input_label');
-            label2.setAttribute('for', 'password');
-            label2.textContent = 'Пароль';
-
+            let inputBlock2      = create_input_block('input_block');
+            let input2         = create_input('input', 'password', 'password', 'password', 'Введите ваш пароль');
+            let label2         = create_label_forInput('input_label', 'password', 'Пароль');
             inputBlock2.append(input2);
             inputBlock2.append(label2);
 
@@ -57,24 +23,15 @@
             inputBox.append(inputBlock2);
 
             // Создаем кнопки
-            let buttonBox = document.createElement('div');
-            buttonBox.classList.add('button_box');
+            let buttonBox        = create_button_box('button_box');
+            let button1       = create_button('button', 'Войти', clickRegisterButton);
+            let button2       = create_button('button', 'Зарегистрироваться', goToRegister);
 
-            let button1 = document.createElement('button');
-            button1.classList.add('button');
-            button1.textContent = 'Войти';
-            button1.addEventListener("click", clickRegisterButton);
-
-            let button2 = document.createElement('button');
-            button2.classList.add('button');
-            button2.textContent = 'Зарегистрироваться';
-            button2.addEventListener("click", goToRegister);
 
             buttonBox.append(button1);
             buttonBox.append(button2);
 
             // Добавляем все элементы в content
-
             content.append(contentText);
             content.append(inputBox);
             content.append(buttonBox);
@@ -84,13 +41,77 @@
         }
     }
 
-    function goToRegister() {
-       document.querySelector(".content").remove();
-        app.PageRegister.draw();
+    function create_content_div(contentClass) {
+        let content = document.createElement('div');
+        content.classList.add(contentClass);
+        return content;
+    }
+
+    function create_content_text(textClass, text) {
+        let contentText = document.createElement('h2');
+        contentText.classList.add(textClass);
+        contentText.textContent = text;
+        return contentText;
+    }
+
+    function create_input_box(inputBoxClass) {
+        let inputBox = document.createElement('div');
+        inputBox.classList.add(inputBoxClass);
+        return inputBox;
+    }
+
+    function create_input_block(inputBlockClass) {
+        let inputBlock = document.createElement('div');
+        inputBlock.classList.add(inputBlockClass);
+        return inputBlock;
+    }
+
+    function create_input(inputClass, type, id, name, placeholder) {
+        let input = document.createElement('input');
+        input.classList.add(inputClass);
+        input.setAttribute('type', type);
+        input.setAttribute('id', id);
+        input.setAttribute('name', name);
+        input.setAttribute('placeholder', placeholder);
+        return input;
+    }
+
+    function create_form (formClass, method) {
+        let form = document.createElement('form');
+        form.classList.add(formClass)
+        form.setAttribute('method', method);
+        return form;
+    }
+
+    function create_label_forInput(labelClass, labelFor, text) {
+        let label = document.createElement('label');
+        label.classList.add(labelClass);
+        label.setAttribute('for', labelFor);
+        label.textContent = text;
+        return label;
     }
 
     function clickRegisterButton() {
         alert('Вы успешно вошли. Или нет. Пока непонятно');
+    }
+
+    function create_button_box(buttonBoxClass) {
+        let buttonBox = document.createElement('div');
+        buttonBox.classList.add(buttonBoxClass);
+        return buttonBox;
+    }
+
+    function create_button(buttonClass, text, clickFunction) {
+        let button = document.createElement('button');
+        button.classList.add(buttonClass);
+        button.textContent = text;
+        button.addEventListener("click", clickFunction);
+        return button;
+    }
+
+    function goToRegister() {
+        document.querySelector(".content_login-reg").remove();
+        app.PageRegister.draw();
     }
 
 
