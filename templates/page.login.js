@@ -5,16 +5,16 @@
             let content         = create_content_div('content_login-reg');
             let contentText = create_content_text('content_text', 'Вход')
 
-            let inputBox         = create_form ('input_box', 'POST');
+            let inputBox         = create_form ('input_box', 'GET');
 
             let inputBlock1      = create_input_block('input_block');
-            let input1         = create_input('input', 'email', 'email', 'email', 'Введите ваш email');
+            let input1         = create_input('input', 'email', 'userEmail', 'email', 'on','Введите ваш email');
             let label1         = create_label_forInput('input_label', 'email', 'E-mail');
             inputBlock1.append(input1);
             inputBlock1.append(label1);
 
             let inputBlock2      = create_input_block('input_block');
-            let input2         = create_input('input', 'password', 'password', 'password', 'Введите ваш пароль');
+            let input2         = create_input('input', 'password', 'userPassword', 'password','current-password', 'Введите ваш пароль');
             let label2         = create_label_forInput('input_label', 'password', 'Пароль');
             inputBlock2.append(input2);
             inputBlock2.append(label2);
@@ -24,7 +24,7 @@
 
             // Создаем кнопки
             let buttonBox        = create_button_box('button_box');
-            let button1       = create_button('button', 'Войти', clickRegisterButton);
+            let button1       = create_button('button', 'Войти', loginUser);
             let button2       = create_button('button', 'Зарегистрироваться', goToRegister);
 
 
@@ -66,13 +66,15 @@
         return inputBlock;
     }
 
-    function create_input(inputClass, type, id, name, placeholder) {
+    function create_input(inputClass, type, id, name, autocomplete, placeholder) {
         let input = document.createElement('input');
         input.classList.add(inputClass);
         input.setAttribute('type', type);
         input.setAttribute('id', id);
         input.setAttribute('name', name);
+        input.setAttribute('autocomplete', autocomplete);
         input.setAttribute('placeholder', placeholder);
+        return input;
         return input;
     }
 
@@ -91,9 +93,7 @@
         return label;
     }
 
-    function clickRegisterButton() {
-        alert('Вы успешно вошли. Или нет. Пока непонятно');
-    }
+
 
     function create_button_box(buttonBoxClass) {
         let buttonBox = document.createElement('div');
@@ -113,6 +113,8 @@
         document.querySelector(".content_login-reg").remove();
         app.PageRegister.draw();
     }
+
+
 
 
 })(AdsBoard);

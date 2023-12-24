@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['productId'])) {  //Поиск конкретного товар по id
         $productId = $_GET['productId'];
         $productQuery = $product->getOneProduct($productId);
-    } elseif (isset($_GET['userId'])) {  //Поиск всех товары одного пользователя по id
+    } elseif (isset($_GET['userId'])) {  //Поиск всех товаров одного пользователя по id
         $userId = $_GET['userId'];
         $productQuery = $product->getAllProductsOfUser($userId);
     } elseif (isset($_GET['productName'])) {  //Поиск товаров по названию

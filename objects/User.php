@@ -1,8 +1,10 @@
 <?php
 
+
 namespace objects;
 
-require_once('config/Database.php');
+require_once ('G:\laragon\www\billboard\config\Database.php');
+
 
 use config\Database;
 
@@ -14,6 +16,49 @@ class User extends Database
     {
         Database::connect();
     }
+
+
+    //функция для логина пользователя
+    public function userLogin($userEmail, $userPassword)
+    {
+        $stmt = mysqli_prepare(Database::connect(), "SELECT `user_id`, `name`, `email`, `phone`, `password` FROM `users` WHERE `email`= ?");
+
+        mysqli_stmt_bind_param($stmt, "s", $userEmail);
+        mysqli_stmt_execute($stmt);
+        $userStmtResult = mysqli_stmt_get_result($stmt);
+        $userDB = mysqli_fetch_assoc($userStmtResult);
+//        print_r($userDB);
+
+        if ($userDB == 0) {
+            $err = "Пользователя с таким email не существует";
+            echo $err;
+        } else {
+            $hashed_password = password_hash($userDB['password'], PASSWORD_DEFAULT);
+
+            if (password_verify($userPassword, $hashed_password)) {
+                $_SESSION['logged_in'] = true;
+                $_SESSION['user_id'] = $userDB['user_id'];
+                $_SESSION['userName'] = $userDB['name'];
+                $_SESSION['userPhone'] = $userDB['phone'];
+
+            } else {
+                $err = 'Неверный пароль';
+                echo $err;
+            }
+
+
+        }
+    }
+
+    public function LogOut()
+    {
+        if(isset($_SESSION['user_id']))  {
+            session_destroy();
+        }
+        $logOutMessage = "Вы вышли из системы";
+//        echo $logOutMessage;
+    }
+
 
     //функция для получения одного пользователя по ID с БД
     public function getOneUser($userId)
@@ -45,12 +90,21 @@ class User extends Database
     {
         if (!empty($name) && !empty($email) && !empty($phone) && !empty($password)) {
             $stmt = mysqli_prepare(Database::connect(), "INSERT INTO `users` (`name`, `email`, `phone`, `password`) VALUES (?, ?, ?, ?)");
-            mysqli_stmt_bind_param($stmt, "ssis", $name, $email, $phone, $password);
+            $hashPassword = md5($password);
+            mysqli_stmt_bind_param($stmt, "ssis", $name, $email, $phone, $hashPassword);
             mysqli_stmt_execute($stmt);
-           $messege =  "Cоздан новый пользователь: Имя: " . $name . " Почта: " . $email . " Номер телефона: " . $phone . " Пароль: " . $password;
-           return ($messege);
+//            $error = mysqli_stmt_error_list($stmt);
+//            echo (__toString($error));
+//            if (!$error) {
+//                $message = "Cоздан новый пользователь: Имя: " . $name;
+//                echo $message;
+//            } else {
+//                echo ("Что то пошло не так" . __toString($error) );
+//            }
+
         } else {
-//            echo "Заполните все поля";
+            $errorMessage = "заполните все поля";
+            echo ($errorMessage);
         }
     }
 

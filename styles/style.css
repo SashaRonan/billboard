@@ -3,6 +3,16 @@
     padding: 0;
 }
 
+@font-face {
+    font-family: "Inter";
+    src: url("fonts/Inter-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("fonts/Inter-Regular.ttf");
+}
+
 .header {
     position: fixed;
     top: 0;
@@ -47,6 +57,8 @@
     font-weight: normal;
     display: inline-block;
     text-decoration: none;
+    background: none;
+    border: none;
 }
 
 .header_a:hover {
@@ -187,6 +199,7 @@
 
 
 .product_button {
+    font-family: Inter;
     color: white;
     width: 150px;
     height: 30px;
@@ -200,8 +213,9 @@
 .user_phone_class {
     color: #000;
     font-family: Inter;
-    font-size: 12px;
+    font-size: 16px;
     font-weight: 400;
+
 }
 
 .product_description-box {
@@ -221,6 +235,7 @@
 }
 
 .product_description {
+    font-family: Inter;
     font-size: 18px;
     font-style: normal;
     font-weight: 400;
@@ -300,7 +315,7 @@
     font-family: Inter;
     font-size: 16px;
     font-weight: 400;
-    margin-top: 30px ;
+    margin-top: 30px;
 }
 
 .input_ads {
@@ -330,6 +345,7 @@
 .upload_button_box {
     margin-left: 20px;
 }
+
 .upload_button {
     display: flex;
     justify-content: center;
@@ -347,6 +363,39 @@
 }
 
 .upload_img_file {
-width: 100%;
+    width: 100%;
     height: 100%;
+}
+
+
+.password {
+    /*width: 300px;*/
+    /*margin: 15px auto;*/
+    position: relative;
+}
+
+#password-input {
+    width: 100%;
+    padding: 5px 0;
+    height: 30px;
+    line-height: 40px;
+    text-indent: 10px;
+    margin: 0 0 15px 0;
+    border-radius: 5px;
+    border: 1px solid #999;
+    font-size: 18px;
+}
+
+.password-control {
+    position: absolute;
+    top: 11px;
+    right: 6px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: url(../img/logo/view.svg) 0 0 no-repeat;
+}
+
+.password-control.view {
+    background: url(../img/logo/no_view.svg) 0 0 no-repeat;
 }

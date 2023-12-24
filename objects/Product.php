@@ -1,7 +1,7 @@
 <?php
 
 namespace objects;
-require_once('config/Database.php');
+require_once ('G:\laragon\www\billboard\config\Database.php');
 
 use config\Database;
 
@@ -31,25 +31,27 @@ class Product extends Database
     public function getUProductsList()
     {
         $selectProductsQuery = Database::query("SELECT `product_name`,`description`,`price`,`product_img`,`name`,`phone` FROM `products` LEFT OUTER JOIN `users` ON `select_user_id` = `user_id`");
-        $numRows = Database::getNumRows($selectProductsQuery);
-        while ($numRows = Database::fetch($selectProductsQuery)) {
-            $products [] = $numRows;
+//        $numRows = Database::getNumRows($selectProductsQuery);
+        while ($numRows = Database::fetch($selectProductsQuery) ) {
+            $productsList [] = $numRows;
         }
-        return ($products);
+        echo json_encode($productsList);
     }
 
     //функция для поиска всех товаров конкретного пользователя с БД
-    public function getAllProductsOfUser($userId)
+    public function getAllProductsOfUser($userEmail)
     {
-        $stmt = mysqli_prepare(Database::connect(), "SELECT `product_name`,`description`,`price`,`product_img`,`name`,`phone` FROM `products` LEFT OUTER JOIN `users` ON `select_user_id` = `user_id` WHERE `user_id` = ? ");
-        mysqli_stmt_bind_param($stmt, "i", $userId);
+        $stmt = mysqli_prepare(Database::connect(), "SELECT `product_name`,`description`,`price`,`product_img`,`name`,`phone` FROM `products` LEFT OUTER JOIN `users` ON `select_user_id` = `user_id` WHERE `email` = ? ");
+        mysqli_stmt_bind_param($stmt, "s", $userEmail);
         mysqli_stmt_execute($stmt);
         $products= mysqli_stmt_get_result($stmt);
-        $numRows = mysqli_num_rows($products);
+//        $numRows = mysqli_num_rows($products);
+//        $productsList [] =[];
         while ($numRows = Database::fetch($products)) {
-            $productsList []= $numRows;
+            $productsList [] = $numRows;
         }
-        print_r($productsList);
+//        print_r($productsList);
+        echo json_encode($productsList);
 
     }
 

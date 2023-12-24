@@ -4,7 +4,7 @@
 
             let header             = create_header_tag();
             let container        = create_header_container();
-            let headerLogo     = create_header_logo();
+            let headerLogo    = create_header_logo();
 
             container.append(headerLogo);
             header.append(container);

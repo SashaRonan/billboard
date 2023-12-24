@@ -10,31 +10,33 @@
             let inputBox = create_form ('input_box', 'POST');
 
             let inputBlock1 = create_div ('input_block');
-            let input1 = create_input('input', 'email', 'email', 'email', 'Введите ваш email');
+            let input1 = create_input('input', 'email', 'email', 'email','field-name', 'Введите ваш email');
             let label1 = create_label_forInput('input_label', 'email', 'E-mail');
             inputBlock1.append(input1);
             inputBlock1.append(label1);
 
             let inputBlock2 = create_div ('input_block');
-            let input2 = create_input('input', 'tel', 'phone', 'phone', 'Введите ваш номер телефона');
+            let input2 = create_input('input', 'tel', 'phone', 'phone', 'field-name','Введите ваш номер телефона');
             let label2 = create_label_forInput('input_label', 'phone', 'Телефон');
             inputBlock2.append(input2);
             inputBlock2.append(label2);
 
             let inputBlock3 = create_div ('input_block');
-            let input3 = create_input('input', 'text', 'name', 'name', 'Введите вашу фамилия, имя, отчество');
+            let input3 = create_input('input', 'text', 'name', 'name','field-name', 'Введите вашу фамилия, имя, отчество');
             let label3 = create_label_forInput('input_label', 'name', 'ФИО');
             inputBlock3.append(input3);
             inputBlock3.append(label3);
 
             let inputBlock4 = create_div ('input_block');
-            let input4 = create_input('input', 'password', 'password', 'password', 'Введите ваш пароль');
+            let input4 = create_input('input password', 'password', 'password', 'password', 'current-password','Введите ваш пароль');
             let label4 = create_label_forInput('input_label', 'password', 'Пароль');
+            let showHideEye = create_hide_show_eye();
+            input4.append(showHideEye);
             inputBlock4.append(input4);
             inputBlock4.append(label4);
 
             let inputBlock5 = create_div ('input_block');
-            let input5 = create_input('input', 'password', 'confirmPassword', 'confirmPassword', 'Введите ваш пароль еще раз');
+            let input5 = create_input('input', 'password', 'confirmPassword', 'confirmPassword','current-password', 'Введите ваш пароль еще раз');
             let label5 = create_label_forInput('input_label', 'confirmPassword', 'Подтвердите пароль');
             inputBlock4.append(input5);
             inputBlock4.append(label5);
@@ -86,13 +88,18 @@
         return contentText;
     }
 
-    function create_input(inputClass, type, id, name, placeholder) {
+    function create_input(inputClass, type, id, name, autocomplete, placeholder) {
         let input = document.createElement('input');
-        input.classList.add(inputClass);
+        // input.classList.add(inputClass);
+        let array = inputClass.split(' ');
+        for (let i = 0, length = array.length; i < length; i++) {
+            input.classList.add(array[i]);
+        }
+
         input.setAttribute('type', type);
         input.setAttribute('id', id);
         input.setAttribute('name', name);
-        input.setAttribute('autocomplete', 'on');
+        input.setAttribute('autocomplete', autocomplete);
         input.setAttribute('placeholder', placeholder);
         return input;
     }
@@ -113,10 +120,31 @@
         return button;
     }
 
+    function create_hide_show_eye () {
+        let hideShowEye = document.createElement('a');
+        hideShowEye.classList.add('password-control');
+        hideShowEye.setAttribute('href', '#showHidePassword');
+        hideShowEye.addEventListener("click",show_hide_password);
+        return hideShowEye;
+    }
+
+    function show_hide_password(target){
+        let input = document.getElementById('password-input');
+        if (input.getAttribute('type') == 'password') {
+            target.classList.add('view');
+            input.setAttribute('type', 'text');
+        } else {
+            target.classList.remove('view');
+            input.setAttribute('type', 'password');
+        }
+        return false;
+    }
+
     function goToLogin() {
         document.querySelector(".content_login-reg").remove();
         app.PageLogin.draw();
     }
+
 
     function clickLoginButton() {
         alert('Вы успешно зарегистрировались. Или нет. Пока непонятно');

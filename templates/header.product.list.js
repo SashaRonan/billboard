@@ -7,9 +7,9 @@
             let containerHeader   = create_div ('container_productList-header');
             let headerLogo     = create_header_logo ('header_logo', '#link_to_main', 'МояОбъява.RU')
             let headerNav         = create_div ('header_nav');
-            let headerNavList  = create_header_nav_link('header_a','#link_to_productList',"Лента");
-            let headerNavMyAds = create_header_nav_link('header_a','#link_to_MyAds',"Мои объявления" );
-            let headerNavExit  = create_header_nav_link('header_a','#Exit_Messege, #link_to_LoginPage',"Выход" );
+            let headerNavList  = create_button('header_a',"Лента", LogOut);
+            let headerNavMyAds = create_button('header_a',"Мои объявления", LogOut );
+            let headerNavExit  = create_button('header_a', "Выход", LogOut );
 
             headerNav.append(headerNavList);
             headerNav.append(headerNavMyAds);
@@ -33,7 +33,6 @@
         return content;
     }
 
-
     function create_header_logo (headerLogoClass, link, text) {
         let headerLogo = document.createElement('a');
         headerLogo.classList.add(headerLogoClass);
@@ -42,20 +41,52 @@
         return headerLogo;
     }
 
-    function create_header_nav_link (headerNavLinkClass, link, text,) {
+    function create_header_nav_link (headerNavLinkClass, link, text, clickFunction) {
         let headerLink = document.createElement("a");
         headerLink.classList.add(headerNavLinkClass);
         headerLink.setAttribute('href', link);
         headerLink.textContent = text;
-        // headerLink.addEventListener("click", clickFunction);
+        headerLink.addEventListener("onclick", clickFunction);
 
         return headerLink;
     }
 
-    // function goToProductList() {
-    //     document.querySelector(".content_product").remove();
-    //     app.ProductList.draw();
-    // }
+    function create_button(buttonClass, text, clickFunction) {
+        let button = document.createElement('button');
+        button.classList.add(buttonClass);
+        button.textContent = text;
+        button.addEventListener("click", clickFunction);
+        return button;
+    }
+
+    function LogOut(){
+        let phpSessionId = document.cookie.match(/PHPSESSID=[^;]+/);
+        if(phpSessionId != null) {
+            if (phpSessionId instanceof Array)
+                phpSessionId = phpSessionId[0].substring(11);
+            else
+                phpSessionId = phpSessionId.substring(11);
+        }
+        // return jsId;
+
+
+        fetch('users.php', {
+            method: 'POST',
+            body: phpSessionId,
+        })
+            .then (
+                response => response.text()
+            )
+            .then(
+                result => {
+                    console.dir(result);
+                    document.querySelector(".header").remove();
+                    document.querySelector(".content_product").remove();
+                    AdsBoard.HeaderLoginReg.draw();
+                    AdsBoard.PageLogin.draw();
+                }
+            )
+    }
 
 
 })(AdsBoard);
