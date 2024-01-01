@@ -93,8 +93,6 @@
         return label;
     }
 
-
-
     function create_button_box(buttonBoxClass) {
         let buttonBox = document.createElement('div');
         buttonBox.classList.add(buttonBoxClass);
@@ -113,8 +111,5 @@
         document.querySelector(".content_login-reg").remove();
         app.PageRegister.draw();
     }
-
-
-
 
 })(AdsBoard);

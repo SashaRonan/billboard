@@ -9,9 +9,11 @@
 
     <link rel="stylesheet" href="styles/style.css">
     <title>Мои объявления</title>
-    <script>
-        let AdsBoard = {};
-    </script>
+<!--    <script>-->
+<!--        let AdsBoard = {};-->
+<!--    </script>-->
+
+    <script src="src/users.js"></script>
     <script src="templates/header.product.list.js"></script>
     <script src="templates/my.ads.js"></script>
     <script src="templates/my.ads.addButton.js"></script>
@@ -21,8 +23,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             AdsBoard.HeaderProductList.draw()
             AdsBoard.MyAdsAddButton.draw()
-            AdsBoard.MyAds.draw('Планшет Galaxy Tab.', 'Немного потрепанный, цвет черный.', 25000)
-            AdsBoard.MyAds.draw('Колонки Xiaomi.', 'Бу, состояние на четверку, недорого.', 6000)
+            AdsBoard.MyAds.draw(productName, productDescription, productPrice)
         });
     </script>
 </head>

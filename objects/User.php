@@ -3,64 +3,58 @@
 
 namespace objects;
 
-require_once ('G:\laragon\www\billboard\config\Database.php');
+require_once('..\config\Database.php');
 
 
 use config\Database;
 
 class User extends Database
 {
-
     // конструктор для соединения с базой данных
     public function __construct()
     {
         Database::connect();
     }
 
-
     //функция для логина пользователя
     public function userLogin($userEmail, $userPassword)
     {
-        $stmt = mysqli_prepare(Database::connect(), "SELECT `user_id`, `name`, `email`, `phone`, `password` FROM `users` WHERE `email`= ?");
+        if (empty($userEmail) || empty($userPassword)) {
+            echo json_encode(["status" => false, "message" => "Не заполнены данные пользователя."]);
+            return;
+        }
 
+        $stmt = mysqli_prepare(Database::connect(), "SELECT `user_id`, `password` FROM `users` WHERE `email`= ?");
         mysqli_stmt_bind_param($stmt, "s", $userEmail);
         mysqli_stmt_execute($stmt);
         $userStmtResult = mysqli_stmt_get_result($stmt);
         $userDB = mysqli_fetch_assoc($userStmtResult);
-//        print_r($userDB);
 
         if ($userDB == 0) {
-            $err = "Пользователя с таким email не существует";
-            echo $err;
-        } else {
-            $hashed_password = password_hash($userDB['password'], PASSWORD_DEFAULT);
+            echo json_encode(["status" => false, "message" => "Пользователя с таким email не существует."]);
+            return;
+        }
 
-            if (password_verify($userPassword, $hashed_password)) {
-                $_SESSION['logged_in'] = true;
-                $_SESSION['user_id'] = $userDB['user_id'];
-                $_SESSION['userName'] = $userDB['name'];
-                $_SESSION['userPhone'] = $userDB['phone'];
-
-            } else {
-                $err = 'Неверный пароль';
-                echo $err;
-            }
-
+        if (md5($userPassword) !== $userDB['password']) {
+            echo json_encode(["status" => false, "message" => "Неверный пароль."]);
+            return;
 
         }
+        $_SESSION['logged_in'] = true;
+        $_SESSION['user_id'] = $userDB['user_id'];
+        echo json_encode(["status" => true, "message" => "Успешная авторизация"]);
     }
 
     public function LogOut()
     {
-        if(isset($_SESSION['user_id']))  {
-            session_destroy();
-        }
-        $logOutMessage = "Вы вышли из системы";
-//        echo $logOutMessage;
+        print_r(session_id());
+//        if(isset($_SESSION['user_id']))  {
+        return session_destroy();
+//        }
+
     }
 
-
-    //функция для получения одного пользователя по ID с БД
+//функция для получения одного пользователя по ID с БД
     public function getOneUser($userId)
     {
         $stmt = mysqli_prepare(Database::connect(), "SELECT `user_id`, `name`,`email`,`phone` FROM `users` WHERE `user_id`= ?");
@@ -71,10 +65,9 @@ class User extends Database
             echo "Поиск не дал результатов";
         }
         return mysqli_fetch_assoc($user);
-
     }
 
-    //функция для получения полного списка пользователей с БД
+//функция для получения полного списка пользователей с БД
     public function getUsersList()
     {
         $selectUserQuery = Database::query("SELECT `user_id`, `name`,`email`,`phone` FROM `users`");
@@ -85,7 +78,7 @@ class User extends Database
         return ($users);
     }
 
-    //функция для создания нового пользователя
+//Регистрация пользователя
     public function createUser($name, $email, $phone, $password)
     {
         if (!empty($name) && !empty($email) && !empty($phone) && !empty($password)) {
@@ -104,11 +97,11 @@ class User extends Database
 
         } else {
             $errorMessage = "заполните все поля";
-            echo ($errorMessage);
+            echo($errorMessage);
         }
     }
 
-    //функция для обновления данных конкретного пользователя
+//функция для обновления данных конкретного пользователя
     public function updateUser()
     {
         //  Создаем массив $_PUT, в который записываем параметры с полученного файла методом PUT
@@ -154,18 +147,13 @@ class User extends Database
             }
 
             Database::query("UPDATE `users` SET" . $queryString . "WHERE" . $userIdString);
-
             echo "Параметры пользователя с ID = " . $_PUT['userId'] . " обновлены";
-
-//              echo json_encode(["result" => true]);
-
         } else {
             echo "Не указан ID пользователя";
-//            echo json_encode(["result" => false, "messege" => "Не верен параметр name "]);
         }
     }
 
-    //функция для удаления конкретного пользователя
+//функция для удаления конкретного пользователя
     public function deleteUser()
     {
         //  Создаем массив $_DELETE, в который записываем ID удаляемого пользователя.

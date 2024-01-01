@@ -14,7 +14,6 @@
 
         }
     }
-
     function create_header_tag () {
         let header = document.createElement('header');
         header.classList.add('header');

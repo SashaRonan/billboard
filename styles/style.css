@@ -194,7 +194,6 @@
 .product_img {
     width: 150px;
     height: 150px;
-    border: 1px solid #000;
 }
 
 
@@ -236,7 +235,7 @@
 
 .product_description {
     font-family: Inter;
-    font-size: 18px;
+    font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;

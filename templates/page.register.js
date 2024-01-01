@@ -145,7 +145,6 @@
         app.PageLogin.draw();
     }
 
-
     function clickLoginButton() {
         alert('Вы успешно зарегистрировались. Или нет. Пока непонятно');
     }

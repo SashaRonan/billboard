@@ -53,4 +53,5 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 //Удаляем пользователя с указанным ID
 } elseif ($_SERVER['REQUEST_METHOD'] == "DELETE") {
     $product->deleteProduct();
+
 }

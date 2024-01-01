@@ -6,8 +6,8 @@
             let content = create_div('content_add-ads');
 
             let inputNameBlock = create_div('input_ads_block');
-            let labelForName = create_label_forInput('input_ads_label', 'product_id', 'Название');
-            let inputName = create_input('input_ads', 'text', 'product_id', 'product_name', 'Введите название вашего товара');
+            let labelForName = create_label_forInput('input_ads_label', 'product_name', 'Название');
+            let inputName = create_input('input_ads', 'text', 'product_name', 'product_name', 'Введите название вашего товара');
             inputNameBlock.append(labelForName);
             inputNameBlock.append(inputName);
 
@@ -29,7 +29,7 @@
             let uploadFileImg = create_div('product_img');
             let uploadImgPreview = create_img ('upload_img_file', 'imgPreview');
 
-            let saveFileButton = create_button('Сохранить');
+            let saveFileButton = create_button('Сохранить', addMyProduct);
 
             uploadFileImg.append(uploadImgPreview)
             uploadFileSaveBlock.append(uploadFileImg);
@@ -39,7 +39,7 @@
             let inputFileBox = create_div('upload_button_box');
 
             let inputFileLabel = create_label_forInput('upload_button', 'file_upload', 'Загрузить');
-            let inputFileButton = create_load_file_button('upload_button_input', 'file_upload', 'file_upload', loadPreviewImg);
+            let inputFileButton = create_load_file_button('upload_button_input', 'file_upload', 'file_name', loadPreviewImg);
             inputFileLabel.append(inputFileButton);
             inputFileBox.append(inputFileLabel);
             uploadFileBox.append(inputFileBox);
@@ -54,7 +54,16 @@
         }
     }
 
-    function create_div(divClass) {
+
+    function create_form (formClass, method) {
+        let form = document.createElement('form');
+        form.classList.add(formClass)
+        form.setAttribute('method', method);
+        form.setAttribute('autocomplete', 'on');
+        return form;
+    }
+
+    function create_div(divClass){
         let content = document.createElement('div');
         let array = divClass.split(' ');
         for (let i = 0, length = array.length; i < length; i++) {
@@ -87,8 +96,9 @@
 
     function create_img (uploadImgFileClass, id) {
         let img = document.createElement('img');
-        img.classList.add(uploadImgFileClass);
         img.setAttribute('id', id);
+        // input.classList.add(inputFileClass);
+        img.classList.add(uploadImgFileClass);
         return img;
     }
 
@@ -116,16 +126,17 @@
     function create_label_forInput(labelClass, labelFor, text) {
         let label = document.createElement('label');
         label.classList.add(labelClass);
+        // label.setAttribute('id', labelID);
         label.setAttribute('for', labelFor);
         label.textContent = text;
         return label;
     }
 
-    function create_button(text) {
+    function create_button(text, clickFunction) {
         let button = document.createElement('button');
         button.classList.add('product_button');
         button.textContent = text;
-        // button.addEventListener("click", clickFunction);
+        button.addEventListener("click", clickFunction);
         return button;
     }
 

@@ -32,6 +32,5 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (isset($userData['password'])) {
         $password = $userData['password'];
     }
-
     $user->createUser($name, $email, $phone, $password);
 }

@@ -1,13 +1,16 @@
 (function (app) {
     app.MyAds = {
-        draw: function (productName, productDescription, productPrice) {
+        draw: function (editButtonId,deleteButtonId, productName, productDescription, productPrice, productImgSrc) {
 
             let content                     = create_div ("content_product container_login_header")
 
             let productBlock                  = create_div ('product_block');
             let productImgBox                 = create_div ('product_img-box');
-            let productImg                    = create_div ('product_img');
-            productImgBox.append(productImg);
+            let productImgDiv                    = create_div ('product_img');
+            let productImg =                                create_img (productImgSrc);
+
+            productImgDiv.append(productImg);
+            productImgBox.append(productImgDiv);
 
             let productRightDiv = create_div('product_right_block');
 
@@ -30,8 +33,8 @@
 
             let productBottomDiv = create_div('product_bottom_block');
 
-            let button_edit = create_button('edit_button_1', 'Изменить');
-            let button_delete = create_button('delete_button_1', 'Удалить');
+            let button_edit = create_button(editButtonId, 'Изменить');
+            let button_delete = create_button(deleteButtonId, 'Удалить');
             productBottomDiv.append(button_edit);
             productBottomDiv.append(button_delete);
 
@@ -54,7 +57,14 @@
         return content;
     }
 
-    function create_button (id, text) {
+    function create_img (src) {
+        let img = document.createElement("img");
+        img.setAttribute('src', src);
+        img.classList.add('upload_img_file');
+        return img;
+    }
+
+    function create_button (id, text, clickFunction) {
         let button = document.createElement('button');
         button.classList.add('product_button');
         button.setAttribute('id', id);
@@ -83,7 +93,4 @@
         productPrice.textContent = price + ' р.';
         return productPrice;
     }
-
-
-
 })(AdsBoard);

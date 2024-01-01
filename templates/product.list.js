@@ -1,18 +1,24 @@
 (function (app) {
     app.ProductList = {
 
-        draw: function (buttonId, userName, userPhoneNumber, productName, productDescription, productPrice) {
+        draw: function (buttonId, userName, userPhoneNumber, productName, productDescription, productPrice, productImgSrc) {
 
             let content                   = create_div ("content_product container_login_header")
 
             let productBlock              = create_div ('product_block');
 
             let productImgBox             = create_div ('product_img-box');
-            let productImg                = create_div ('product_img');
+            // let productImg                = create_div ('product_img');
+
+            let productImgDiv                    = create_div ('product_img');
+            let productImg =                                create_img (productImgSrc);
 
             let userPhoneBtn           = create_user_phone_button(buttonId,userPhoneNumber, productImgBox);
 
-            productImgBox.append(productImg);
+            // productImgBox.append(productImg);
+
+            productImgDiv.append(productImg);
+            productImgBox.append(productImgDiv);
             productImgBox.append(userPhoneBtn);
 
             let productDescriptionBox     = create_div ('product_description-box')
@@ -46,6 +52,13 @@
             content.classList.add(array[i]);
         }
         return content;
+    }
+
+    function create_img (src) {
+        let img = document.createElement("img");
+        img.setAttribute('src', src);
+        img.classList.add('upload_img_file');
+        return img;
     }
 
     function create_user_phone_button(id, userPhoneNumber, parentElem) {
@@ -93,7 +106,5 @@
         productPrice.textContent = price + ' р.';
         return productPrice;
     }
-
-
 
 })(AdsBoard);
