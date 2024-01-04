@@ -317,7 +317,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 150px;
+    height: 100%;
 }
 
 .product_top_block {
@@ -441,4 +441,43 @@
 
 .password-control.view {
     background: url(../img/logo/no_view.svg) 0 0 no-repeat;
+}
+
+.edit_productName {
+    font-family: Inter;
+    height: 31px;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: left;
+    width: 100%;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+.edit_description {
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 15px;
+    text-align: justify;
+    width: 100%;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+.edit_description_box {
+    padding-top: 16px;
+}
+
+.edit_price {
+    margin-top: 16px;
+    width: 113px;
+    text-align: right;
+    font-family: Inter;
+    font-size: 24px;
+    font-weight: 500;
+    align-self: start;
+    border: 1px solid #ccc;
+    outline: none;
+
 }

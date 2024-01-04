@@ -30,7 +30,6 @@ function registerUser() {
 
     fetch('user/userRegistration.php', {
         method: 'POST',
-        credentials: "include",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(params)
     })
@@ -38,7 +37,9 @@ function registerUser() {
             response => {
                 if (!response.ok) {
                     // throw new Error(response.status + ' ' + response.statusText);
-                    return  response.text().then(text => {throw new Error(text)});
+                    return response.text().then(text => {
+                        throw new Error(text)
+                    });
                     console.log(response.text());
                 }
                 return response.json();
@@ -52,7 +53,7 @@ function registerUser() {
                     alert(result.message);
                     console.dir(result.message);
                     goToLogin();
-                } else  {
+                } else {
                     console.dir(result.message);
                     alert(result.message);
                 }
@@ -101,31 +102,21 @@ function loginUser() {
 }
 
 function LogOut() {
-    // let phpSessionId = document.cookie.match(/PHPSESSID=[^;]+/);
-    // if (phpSessionId != null) {
-    //     if (phpSessionId instanceof Array)
-    //         phpSessionId = phpSessionId[0].substring(11);
-    //     else
-    //         phpSessionId = phpSessionId.substring(11);
-    // }
-    //
-    // document.cookie = 'PHPSESSID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = 'PHPSESSID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 
     fetch('user/userLogOut.php', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        // body: JSON.stringify(phpSessionId)
     })
         .then(
             response => response.text()
         )
         .then(
             result => {
-                console.dir(result);
+                alert('Вы вышли из системы')
                 document.body.innerHTML = '';
                 AdsBoard.HeaderLoginReg.draw();
                 AdsBoard.PageLogin.draw();
-                document.cookie = 'PHPSESSID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
             }
         )
         .catch(error => {
@@ -136,7 +127,7 @@ function LogOut() {
 function goToMyProducts() {
 
     fetch('product/productMyList.php', {
-        method: 'POST',
+        // method: 'POST',
         headers: {'Content-Type': 'application/json'},
     })
         .then(
@@ -154,11 +145,30 @@ function goToMyProducts() {
                     AdsBoard.HeaderProductList.draw();
                     AdsBoard.MyAdsAddButton.draw()
 
-                    for (let i = result.length-1; i >=0; i--) {
+                    for (let i = result.length - 1; i >= 0; i--) {
                         let item = result[i];
-                        let editButtonID = "edit_" + item['product_id'];
-                        let deleteButtonID = "del_" + item['product_id'];
-                        AdsBoard.MyAds.draw(editButtonID, deleteButtonID, item['product_name'], item['description'], item['price'], item['product_img']);
+
+                        let productID = item['product_id'];
+                        let product = "product_" + productID;
+                        let editButtonID = "edit_" + productID;
+                        let deleteButtonID = "del_" + productID;
+                        let productNameID = "productName_" + productID;
+                        let productDescriptionID = "description_" + productID;
+                        let productPriceID = "price_" + productID;
+                        let productImgID = "img_" + productID;
+
+                        AdsBoard.MyAds.draw(
+                            product,
+                            editButtonID,
+                            deleteButtonID,
+                            productNameID,
+                            productDescriptionID,
+                            productPriceID,
+                            productImgID,
+                            item['product_name'],
+                            item['description'],
+                            item['price'],
+                            item['product_img']);
                     }
                 }
             }
@@ -175,10 +185,17 @@ function goToProductList() {
                 result => {
                     document.body.innerHTML = '';
                     AdsBoard.HeaderProductList.draw();
-                    for (let i = result.length-1; i >= 0; i--) {
+                    for (let i = result.length - 1; i >= 0; i--) {
                         let item = result[i];
                         let buttonID = "button_id_" + i;
-                        AdsBoard.ProductList.draw(buttonID, item['name'], item['phone'], item['product_name'], item['description'], item['price'], item['product_img']);
+                        AdsBoard.ProductList.draw(
+                            buttonID,
+                            item['name'],
+                            item['phone'],
+                            item['product_name'],
+                            item['description'],
+                            item['price'],
+                            item['product_img']);
                     }
                 }
             )
@@ -235,8 +252,7 @@ function addMyProduct() {
 
 function deleteProduct() {
     let productID = this.id.split('_')[1];
-    fetch('product/deleteProduct.php?productID=' + productID, {
-    })
+    fetch('product/deleteProduct.php?productID=' + productID, {})
         .then(
             response => response.json()
         )
@@ -253,6 +269,43 @@ function deleteProduct() {
                 }
             }
         )
+}
+
+function updateProduct() {
+    let productID = this.id.split('_')[1];
+
+    let product = 'product_' + productID;
+    let productNameID = 'productName_' + productID;
+    let productDescriptionID = 'description_' + productID;
+    let productPriceID = 'price_' + productID;
+    let saveButtonID = 'save_' + productID;
+    let deleteButtonID = "del_" + productID;
+    let productImgID = "img_" + productID;
+
+
+    let productName = document.querySelector('#' + productNameID).textContent;
+    let productDescription = document.querySelector('#' + productDescriptionID).textContent;
+    let productPrice = document.querySelector('#' + productPriceID).textContent;
+    let productImgSrc = document.querySelector('#' + productImgID).src;
+
+    let getProduct = document.querySelector('#' + product);
+    getProduct.innerHTML = '';
+
+    getProduct.appendChild(
+        AdsBoard.EditProduct.draw(
+            saveButtonID,
+            deleteButtonID,
+            productNameID,
+            productDescriptionID,
+            productPriceID,
+            productName,
+            productDescription,
+            productPrice,
+            productImgSrc
+        )
+    )
+
+
 }
 
 
