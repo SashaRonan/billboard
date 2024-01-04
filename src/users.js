@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function goToLogin() {
-
     document.querySelector(".content_login-reg").remove();
     AdsBoard.PageLogin.draw();
 }
@@ -31,24 +30,37 @@ function registerUser() {
 
     fetch('user/userRegistration.php', {
         method: 'POST',
+        credentials: "include",
         headers: {'Content-Type': 'application/json'},
-        // headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: JSON.stringify(params)
     })
         .then(
-            response => response.text(),
-        )
+            response => {
+                if (!response.ok) {
+                    // throw new Error(response.status + ' ' + response.statusText);
+                    return  response.text().then(text => {throw new Error(text)});
+                    console.log(response.text());
+                }
+                return response.json();
+            })
+
+
         .then(
             result => {
-                alert("Вы успешно зарегистрировались. Войдите в систему"),
-                    console.dir(result)
-                goToLogin()
+
+                if (result.status === true) {
+                    alert(result.message);
+                    console.dir(result.message);
+                    goToLogin();
+                } else  {
+                    console.dir(result.message);
+                    alert(result.message);
+                }
             }
         )
         .catch(
             error => {
-                // alert("Регистрация не удалась, произошла ошибка");
-                console.dir(error);
+                console.error(error);
             }
         );
 }
@@ -65,7 +77,6 @@ function loginUser() {
     fetch('user/userLogin.php', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        // headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: JSON.stringify(params)
     })
         .then(
@@ -76,11 +87,10 @@ function loginUser() {
                 if (result.status) {
                     alert(result.message)
                     goToProductList();
-                }
-                else {
+                } else {
                     alert(result.message);
                 }
-              }
+            }
         )
         .catch(
             error => {
@@ -91,20 +101,20 @@ function loginUser() {
 }
 
 function LogOut() {
-    let phpSessionId = document.cookie.match(/PHPSESSID=[^;]+/);
-    if (phpSessionId != null) {
-        if (phpSessionId instanceof Array)
-            phpSessionId = phpSessionId[0].substring(11);
-        else
-            phpSessionId = phpSessionId.substring(11);
-    }
-    // return jsId;
-
+    // let phpSessionId = document.cookie.match(/PHPSESSID=[^;]+/);
+    // if (phpSessionId != null) {
+    //     if (phpSessionId instanceof Array)
+    //         phpSessionId = phpSessionId[0].substring(11);
+    //     else
+    //         phpSessionId = phpSessionId.substring(11);
+    // }
+    //
+    // document.cookie = 'PHPSESSID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 
     fetch('user/userLogOut.php', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(phpSessionId)
+        // body: JSON.stringify(phpSessionId)
     })
         .then(
             response => response.text()
@@ -115,97 +125,60 @@ function LogOut() {
                 document.body.innerHTML = '';
                 AdsBoard.HeaderLoginReg.draw();
                 AdsBoard.PageLogin.draw();
-                //сбросить вручную session_id
+                document.cookie = 'PHPSESSID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
             }
         )
+        .catch(error => {
+            console.error('Произошла ошибка:', error);
+        });
 }
 
 function goToMyProducts() {
-    let phpSessionId = document.cookie.match(/PHPSESSID=[^;]+/);
-    if (phpSessionId != null) {
-        if (phpSessionId instanceof Array)
-            phpSessionId = phpSessionId[0].substring(11);
-        else
-            phpSessionId = phpSessionId.substring(11);
-    }
-
-    let params = {
-        sessionID: phpSessionId
-    };
 
     fetch('product/productMyList.php', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(params)
-
     })
         .then(
             response => response.json()
         )
         .then(
             result => {
-                if (result.status == false) {
+                if (result.status === false) {
                     alert(result.message)
-                    document.body.innerHTML='';
+                    document.body.innerHTML = '';
                     AdsBoard.HeaderProductList.draw();
                     AdsBoard.MyAdsAddButton.draw()
-                }
-                else {
-                    document.body.innerHTML='';
+                } else {
+                    document.body.innerHTML = '';
                     AdsBoard.HeaderProductList.draw();
                     AdsBoard.MyAdsAddButton.draw()
-                    for (let i = 0; i < result.length; i++) {
+
+                    for (let i = result.length-1; i >=0; i--) {
                         let item = result[i];
-                        let editButtonID = "edit_buttonID" + i;
-                        let deleteButtonID = "delete_buttonID" + i;
-                        // AdsBoard.ProductList.draw(buttonID, item['name'], item['phone'], item['product_name'], item['description'], item['price']);
-                        AdsBoard.MyAds.draw(editButtonID, deleteButtonID, item['product_name'], item['description'], item['price'],item['product_img']);
+                        let editButtonID = "edit_" + item['product_id'];
+                        let deleteButtonID = "del_" + item['product_id'];
+                        AdsBoard.MyAds.draw(editButtonID, deleteButtonID, item['product_name'], item['description'], item['price'], item['product_img']);
                     }
                 }
-
-            }
-        )
-        .catch(
-            error => {
-                alert("Что-то пошло не так");
-                console.dir(error);
             }
         )
 }
 
 function goToProductList() {
     {
-        let phpSessionId = document.cookie.match(/PHPSESSID=[^;]+/);
-        if (phpSessionId != null) {
-            if (phpSessionId instanceof Array)
-                phpSessionId = phpSessionId[0].substring(11);
-            else
-                phpSessionId = phpSessionId.substring(11);
-        }
-
-        let params = {
-            sessionID: phpSessionId
-        };
-
-
-        fetch('product/productList.php', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(params)
-
-        })
+        fetch('product/productList.php')
             .then(
                 response => response.json()
             )
             .then(
                 result => {
-                    document.body.innerHTML='';
+                    document.body.innerHTML = '';
                     AdsBoard.HeaderProductList.draw();
-
-                    for (let i = 0; i < result.length; i++) {
+                    for (let i = result.length-1; i >= 0; i--) {
                         let item = result[i];
                         let buttonID = "button_id_" + i;
-                        AdsBoard.ProductList.draw(buttonID, item['name'], item['phone'], item['product_name'], item['description'], item['price'],item['product_img']);
+                        AdsBoard.ProductList.draw(buttonID, item['name'], item['phone'], item['product_name'], item['description'], item['price'], item['product_img']);
                     }
                 }
             )
@@ -219,13 +192,13 @@ function goToProductList() {
 }
 
 function goToAddNewProduct() {
-    document.body.innerHTML='';
+    document.body.innerHTML = '';
     AdsBoard.HeaderProductList.draw();
     AdsBoard.PageAddAds.draw();
 }
 
 function addMyProduct() {
-    let data = new FormData ();
+    let data = new FormData();
 
     let fileInput = document.querySelector('#file_upload');
     let files = fileInput.files;
@@ -241,7 +214,6 @@ function addMyProduct() {
 
     fetch('product/addMyProduct.php', {
         method: 'POST',
-        // headers: {'Content-Type': 'multipart/form-data'},
         body: data
     })
         .then(
@@ -249,14 +221,36 @@ function addMyProduct() {
         )
         .then(
             result => {
-
-                if (result.status) {
+                if (result.status == true) {
+                    alert(result.message);
                     console.dir(result.message);
                     goToMyProducts()
-                } else {
+                } else if (result.status == false) {
+                    console.dir(result.message);
                     alert(result.message);
                 }
+            }
+        )
+}
 
+function deleteProduct() {
+    let productID = this.id.split('_')[1];
+    fetch('product/deleteProduct.php?productID=' + productID, {
+    })
+        .then(
+            response => response.json()
+        )
+        .then(
+            result => {
+                if (result.status === true) {
+                    alert(result.message);
+                    console.dir(result.message);
+                    document.body.innerHTML = '';
+                    goToMyProducts()
+                } else if (result.status === false) {
+                    console.dir(result.message);
+                    alert(result.message);
+                }
             }
         )
 }

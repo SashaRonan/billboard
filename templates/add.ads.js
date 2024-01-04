@@ -58,8 +58,8 @@
     function create_form (formClass, method) {
         let form = document.createElement('form');
         form.classList.add(formClass)
-        form.setAttribute('method', method);
-        form.setAttribute('autocomplete', 'on');
+        // form.setAttribute('method', method);
+        // form.setAttribute('autocomplete', 'on');
         return form;
     }
 

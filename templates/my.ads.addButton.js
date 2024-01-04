@@ -2,7 +2,7 @@
     app.MyAdsAddButton = {
         draw: function () {
 
-            let content                     = create_div ("content_product container_login_header")
+            let content                     = create_div ("content_add_button container_login_header")
 
             let buttonAddBox                  = create_div('button_add-box');
             let buttonAdd                  = create_button('button_add_product', 'Добавить', goToAddNewProduct);

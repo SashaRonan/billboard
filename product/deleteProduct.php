@@ -6,4 +6,6 @@ require_once('../objects/Product.php');
 
 $product = new \objects\Product();
 
-$product->getProductsList();
+$productID = $_GET['productID'] ?? '';
+$product->deleteProduct($productID);
+

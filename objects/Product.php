@@ -42,18 +42,19 @@ class Product extends Database
     {
         $userID = $_SESSION['user_id'];
 
-        $stmt = mysqli_prepare(Database::connect(), "SELECT `product_name`,`description`,`price`,`product_img`,`name`,`phone` FROM `products` LEFT OUTER JOIN `users` ON `select_user_id` = `user_id` WHERE `user_id` = ? ");
+        $stmt = mysqli_prepare(Database::connect(), "SELECT `product_id`, `product_name`,`description`,`price`,`product_img`,`name`,`phone` FROM `products` LEFT OUTER JOIN `users` ON `select_user_id` = `user_id` WHERE `user_id` = ? ");
         mysqli_stmt_bind_param($stmt, "i", $userID);
         mysqli_stmt_execute($stmt);
-;
+
         $products = mysqli_stmt_get_result($stmt);
-        $numFields = mysqli_stmt_field_count($stmt);
+//        $numFields = mysqli_stmt_field_count($stmt);
+        $numRows = mysqli_stmt_affected_rows($stmt);
 
         while ($productArray = mysqli_fetch_assoc($products)) {
             $productsList [] = $productArray;
         }
 
-        if ($numFields==0) {
+        if ($numRows == 0) {
             echo json_encode(["status" => false, "message" => "У вас пока нет товаров на продажу."]);
         } else {
             echo json_encode($productsList);
@@ -73,24 +74,20 @@ class Product extends Database
             $productList [] = $numRows;
         }
         return ($productList);
-
     }
 
 //    функция для нового товара в БД
-    public function createProduct($productName, $description, $userId, $price, $productURL)
+    public function createProduct($productName, $description, $userId, $price, $productImg)
     {
 
-
-        if (!empty($productName) && !empty($description) && !empty($userId) && !empty($price)) {
             $stmt = mysqli_prepare(Database::connect(), "INSERT INTO `products` (`product_name`, `description`, `select_user_id`, `price`, `product_img`) VALUES (?, ?, ?, ?, ?)");
-            mysqli_stmt_bind_param($stmt, "ssiis", $productName, $description, $userId, $price, $productURL);
+            mysqli_stmt_bind_param($stmt, "ssiis", $productName, $description, $userId, $price, $productImg);
             mysqli_stmt_execute($stmt);
             echo json_encode(["status" => true, "message" => "Успешная регистрация продукта"]);
 
-        } else {
-            echo json_encode(["status" => false, "message" => "Заполните все поля"]);
-        }
+
     }
+
 
     //    функция для обновления любого параметра товара в БД по его ID
     public function updateProduct()
@@ -98,6 +95,7 @@ class Product extends Database
         //  Создаем массив $_PUT, в который записываем параметры с полученного файла методом PUT
         $putdata = file_get_contents('php://input', true);
         $productParams = explode('&', $putdata);
+
         $_PUT = [];
         foreach ($productParams as $pair) {
             $item = explode('=', $pair);
@@ -105,8 +103,6 @@ class Product extends Database
                 $_PUT[urldecode($item[0])] = urldecode($item[1]);
             }
         }
-
-//        print_r($_PUT);
 
         if (!empty($_PUT['productId'])) {
 
@@ -146,35 +142,25 @@ class Product extends Database
             echo $queryString;
             Database::query("UPDATE `products` SET" . $queryString . "WHERE" . $productIdString);
             echo "Параметры товара с ID = " . $_PUT['productId'] . " обновлены";
-//              echo json_encode(["result" => true]);
 
         } else {
             echo "Не указан ID товара";
-//            echo json_encode(["result" => false, "messege" => "Не верен параметр name "]);
         }
     }
 
     //функция для удаления конкретного товара по его ID
-    public function deleteProduct()
+    public function deleteProduct($productID)
     {
-        //  Создаем массив $_DELETE, в который записываем ID удаляемого товара.
-        $putdata = file_get_contents('php://input', true);
-        $productParams = explode('&', $putdata);
-        $_DELETE = [];
-        foreach ($productParams as $pair) {
-            $item = explode('=', $pair);
-            if (count($item) == 2) {
-                $_DELETE[urldecode($item[0])] = urldecode($item[1]);
-            }
-        }
+        $stmt = mysqli_prepare(Database::connect(), "DELETE FROM `products` WHERE `products`.`product_id` = ?");
+        mysqli_stmt_bind_param($stmt, "i", $productID);
+        if (mysqli_stmt_execute($stmt)) {
 
-        if (isset($_DELETE['productId'])) {
-            $stmt = mysqli_prepare(Database::connect(), "DELETE FROM `products` WHERE `product_id` = ?");
-            mysqli_stmt_bind_param($stmt, "i", $_DELETE['productId']);
-            mysqli_stmt_execute($stmt);
-            echo "Товар с ID = " . $_DELETE['productId'] . " удален";
+            echo json_encode(["status" => true, "message" => "Вы удалили товар"]);
         } else {
-            echo "Произошла ошибка";
+
+            echo json_encode(["status" => false, "message" => "Произошла ошибка"]);
         }
     }
+
+
 }

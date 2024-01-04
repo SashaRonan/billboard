@@ -16,11 +16,15 @@ class User extends Database
         Database::connect();
     }
 
-    //функция для логина пользователя
-    public function userLogin($userEmail, $userPassword)
+    public function userLogin($userEmail, $userPassword) //Авторизация пользователя
     {
-        if (empty($userEmail) || empty($userPassword)) {
-            echo json_encode(["status" => false, "message" => "Не заполнены данные пользователя."]);
+        if (empty($userEmail)) {
+            echo json_encode(["status" => false, "message" => "Введите почту."]);
+            return;
+        }
+
+        if (empty($userPassword)) {
+            echo json_encode(["status" => false, "message" => "Введите пароль"]);
             return;
         }
 
@@ -38,8 +42,8 @@ class User extends Database
         if (md5($userPassword) !== $userDB['password']) {
             echo json_encode(["status" => false, "message" => "Неверный пароль."]);
             return;
-
         }
+
         $_SESSION['logged_in'] = true;
         $_SESSION['user_id'] = $userDB['user_id'];
         echo json_encode(["status" => true, "message" => "Успешная авторизация"]);
@@ -47,35 +51,7 @@ class User extends Database
 
     public function LogOut()
     {
-        print_r(session_id());
-//        if(isset($_SESSION['user_id']))  {
-        return session_destroy();
-//        }
-
-    }
-
-//функция для получения одного пользователя по ID с БД
-    public function getOneUser($userId)
-    {
-        $stmt = mysqli_prepare(Database::connect(), "SELECT `user_id`, `name`,`email`,`phone` FROM `users` WHERE `user_id`= ?");
-        mysqli_stmt_bind_param($stmt, "i", $userId);
-        mysqli_stmt_execute($stmt);
-        $user = mysqli_stmt_get_result($stmt);
-        if (mysqli_stmt_num_rows($stmt) == 0) {
-            echo "Поиск не дал результатов";
-        }
-        return mysqli_fetch_assoc($user);
-    }
-
-//функция для получения полного списка пользователей с БД
-    public function getUsersList()
-    {
-        $selectUserQuery = Database::query("SELECT `user_id`, `name`,`email`,`phone` FROM `users`");
-        $numRows = Database::getNumRows($selectUserQuery);
-        while ($numRows = Database::fetch($selectUserQuery)) {
-            $users [] = $numRows;
-        }
-        return ($users);
+        session_destroy();
     }
 
 //Регистрация пользователя
@@ -86,18 +62,9 @@ class User extends Database
             $hashPassword = md5($password);
             mysqli_stmt_bind_param($stmt, "ssis", $name, $email, $phone, $hashPassword);
             mysqli_stmt_execute($stmt);
-//            $error = mysqli_stmt_error_list($stmt);
-//            echo (__toString($error));
-//            if (!$error) {
-//                $message = "Cоздан новый пользователь: Имя: " . $name;
-//                echo $message;
-//            } else {
-//                echo ("Что то пошло не так" . __toString($error) );
-//            }
-
+            echo json_encode(["status" => true, "message" => "Вы успешно  зарегистрировались. Войдите в систему"]);
         } else {
-            $errorMessage = "заполните все поля";
-            echo($errorMessage);
+            echo json_encode(["status" => false, "message" => "Заполните все поля."]);
         }
     }
 
@@ -108,6 +75,7 @@ class User extends Database
         $putdata = file_get_contents('php://input', true);
         $userParams = explode('&', $putdata);
         $_PUT = [];
+
         foreach ($userParams as $pair) {
             $item = explode('=', $pair);
             if (count($item) == 2) {

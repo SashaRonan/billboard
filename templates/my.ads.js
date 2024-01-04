@@ -2,9 +2,9 @@
     app.MyAds = {
         draw: function (editButtonId,deleteButtonId, productName, productDescription, productPrice, productImgSrc) {
 
-            let content                     = create_div ("content_product container_login_header")
+            let content                     = create_div ("content_product_add container_login_header")
 
-            let productBlock                  = create_div ('product_block');
+            let productBlock                  = create_div ('product_block_add');
             let productImgBox                 = create_div ('product_img-box');
             let productImgDiv                    = create_div ('product_img');
             let productImg =                                create_img (productImgSrc);
@@ -16,7 +16,7 @@
 
             let productTopDiv = create_div('product_top_block');
 
-            let productDescriptionBox          = create_div ('product_description-box')
+            let productDescriptionBox          = create_div ('product_description-box_add')
             let productNameDescriptionBox      = create_div ('product_name-description-box');
             let productNameBlock           = create_product_name ('product_name', productName);
             let productDescriptionBlock   = create_product_description ('product_description', productDescription)
@@ -33,8 +33,8 @@
 
             let productBottomDiv = create_div('product_bottom_block');
 
-            let button_edit = create_button(editButtonId, 'Изменить');
-            let button_delete = create_button(deleteButtonId, 'Удалить');
+            let button_edit = create_button(editButtonId, 'Изменить', deleteProduct);
+            let button_delete = create_button(deleteButtonId, 'Удалить', deleteProduct);
             productBottomDiv.append(button_edit);
             productBottomDiv.append(button_delete);
 
@@ -57,6 +57,14 @@
         return content;
     }
 
+    function create_form (formClass, method) {
+        let form = document.createElement('form');
+        form.classList.add(formClass)
+        form.setAttribute('method', method);
+        form.setAttribute('autocomplete', 'on');
+        return form;
+    }
+
     function create_img (src) {
         let img = document.createElement("img");
         img.setAttribute('src', src);
@@ -69,7 +77,7 @@
         button.classList.add('product_button');
         button.setAttribute('id', id);
         button.textContent = text;
-        // button.addEventListener("click", clickFunction);
+        button.addEventListener("click", clickFunction);
         return button;
     }
 
