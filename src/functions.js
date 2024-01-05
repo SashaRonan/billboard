@@ -219,15 +219,12 @@ function addMyProduct() {
 
     let fileInput = document.querySelector('#file_upload');
     let files = fileInput.files;
-    console.dir(files);
     for (let i = 0; i < files.length; i++) {
         data.append('myProduct', files[i]);
         data.append("product_name", document.querySelector('#product_name').value);
         data.append("product_description", document.querySelector("#product_description").value);
         data.append("product_price", document.querySelector('#product_price').value);
     }
-
-    console.dir(data);
 
     fetch('product/addMyProduct.php', {
         method: 'POST',
@@ -278,8 +275,8 @@ function goToFormUpdateProduct() {
     let productNameID = 'productName_' + productID;
     let productDescriptionID = 'description_' + productID;
     let productPriceID = 'price_' + productID;
-    let saveButtonID = 'save_' + productID;
-    let deleteButtonID = "del_" + productID;
+    // let saveButtonID = 'save_' + productID;
+    // let deleteButtonID = "del_" + productID;
     let productImgID = "img_" + productID;
 
 
@@ -294,11 +291,6 @@ function goToFormUpdateProduct() {
     getProduct.appendChild(
         AdsBoard.EditProduct.draw(
             productID,
-            // saveButtonID,
-            // deleteButtonID,
-            // productNameID,
-            // productDescriptionID,
-            // productPriceID,
             productName,
             productDescription,
             productPrice,
@@ -306,43 +298,37 @@ function goToFormUpdateProduct() {
         )
     );
 
-
 }
 
-function saveUpdateProduct () {
+function saveUpdateProduct() {
 
     let productID = this.id.split('_')[1];
-    console.log(productID);
-
     let productNameID = '#productName_' + productID;
     let productDescriptionID = '#description_' + productID;
     let productPriceID = '#price_' + productID;
 
     let data = new FormData();
 
-    let imgSrc = document.querySelector('#img_' + productID).src;
-    console.log(imgSrc);
-    let imgSrcCut = imgSrc.split('/')[6];
-    console.log(imgSrcCut);
+    let getImgSrc = document.querySelector('#img_' + productID).src;
+    let imgSrc = getImgSrc.split('/')[6];
 
-    let fileInput = document.querySelector('#product_change');
-    let files = fileInput.files;
 
-    for (let i = 0; i < files.length; i++) {
-        if (files.length > 0) {
-            data.append('myProduct', files[i]);
-        } else {
-            data.append('myProduct["name"]', imgSrc.split('/')[6])
-        }
+    let fileInput = document.querySelector('#product_change_' + productID);
+    let newFiles = fileInput.files;
 
-        data.append("product_id", productID);
-        data.append("product_name", document.querySelector(productNameID).value);
-        data.append("product_description", document.querySelector(productDescriptionID).value);
-        data.append("product_price", document.querySelector(productPriceID).value);
+    for (let i = 0; i < newFiles.length; i++) {
+        data.append('myProduct', newFiles[i]);
     }
 
+    if (newFiles.length === 0) {
+        data.append('product_file', imgSrc);
+    }
 
-    console.log(data);
+    data.append("product_id", productID);
+    data.append("product_name", document.querySelector(productNameID).value);
+    data.append("product_description", document.querySelector(productDescriptionID).value);
+    data.append("product_price", document.querySelector(productPriceID).value);
+
     fetch('product/updateProduct.php', {
         method: 'POST',
         body: data
@@ -353,7 +339,7 @@ function saveUpdateProduct () {
         .then(
             result => {
                 if (result.status == true) {
-                    alert(result.message);
+                    // alert(result.message);
                     console.dir(result.message);
                     goToMyProducts()
                 } else if (result.status == false) {

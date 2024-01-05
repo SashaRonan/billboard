@@ -2,18 +2,12 @@
     app.EditProduct = {
         draw: function (
             productID,
-            // saveButtonId,
-            // deleteButtonId,
-            // productNameID,
-            // productDescriptionID,
-            // productPriceID,
             productName,
             productDescription,
             productPrice,
             productImgSrc
         )
         {
-
             let productBlock = create_div('product_block_add');
             let productImgBox = create_div('product_img-box');
             let productImgDiv = create_div('product_img');
@@ -49,8 +43,8 @@
             let productBottomDiv = create_div('edit_product_bottom_block');
 
 
-            let inputFileLabel = create_label_forInput('change_img', 'product_change', 'Загрузить');
-            let inputFileButton = create_load_file_button('upload_button_input', 'product_change',  loadPreviewImg);
+            let inputFileLabel = create_label_forInput('change_img', 'product_change_' + productID, 'Загрузить');
+            let inputFileButton = create_load_file_button('upload_button_input', 'product_change_' + productID,  loadPreviewImg);
             inputFileLabel.append(inputFileButton);
 
 
@@ -64,9 +58,6 @@
             productBlock.append(productImgBox);
             productBlock.append(productRightDiv);
             return productBlock;
-            // content.append(productBlock);
-
-            // document.body.append(productBlock);
         }
     }
 
@@ -125,19 +116,12 @@
         return input;
     }
 
-    // function create_img (uploadImgFileClass, id) {
-    //     let img = document.createElement('img');
-    //     img.setAttribute('id', id);
-    //     // input.classList.add(inputFileClass);
-    //     img.classList.add(uploadImgFileClass);
-    //     return img;
-    // }
-
-    function loadPreviewImg (event, productID) {
-        let output = document.getElementById('img_' + productID);
+    function loadPreviewImg (event) {
+        let getID = this.id.split('_')[2];
+        let output = document.querySelector('#img_' + getID);
         output.src = URL.createObjectURL(event.target.files[0]);
         output.onload = function() {
-            URL.revokeObjectURL(output.src) // free memory
+            URL.revokeObjectURL(output.src)
         }
         return output.onload;
     }
@@ -150,5 +134,4 @@
         button.addEventListener("click", clickFunction);
         return button;
     }
-
 })(AdsBoard);
