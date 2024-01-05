@@ -14,14 +14,10 @@ require_once('../objects/User.php');
 
 $user = new objects\User ();
 
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $inputData = file_get_contents('php://input');
     $userData = json_decode($inputData, true);
-
-    echo '<br>';
-    print_r($inputData );
 
     if (isset($userData['name'])) {
         $name = $userData['name'];
@@ -38,11 +34,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($userData['password'])) {
         $password = $userData['password'];
     }
-
-//    $name = isset($userData['name']) ? $userData['name'] : '';
-//    $phone = isset($userData['phone']) ? $userData['phone'] : '';
-//    $email = isset($userData['email']) ? $userData['email'] : '';
-//    $password = isset($userData['password']) ? $userData['password'] : '';
 
     $user->createUser($name, $email, $phone, $password);
 }

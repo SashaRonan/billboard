@@ -2,39 +2,44 @@
     app.PageLogin = {
         draw: function () {
 
-            let content         = create_content_div('content_login-reg');
-            let contentText = create_content_text('content_text', 'Вход')
+            let content             = create_content_div('content_login-reg');
+            let loginBlock         = create_div('login_block');
 
-            let inputBox         = create_form ('input_box', 'GET');
+            let contentText    = create_content_text('content_text', 'Вход')
 
-            let inputBlock1      = create_input_block('input_block');
-            let input1         = create_input('input', 'email', 'userEmail', 'email', 'on','Введите ваш email');
-            let label1         = create_label_forInput('input_label', 'email', 'E-mail');
+            let inputBox          = create_form ('input_box', 'GET');
+
+            let inputBlock1         = create_input_block('input_block');
+            let input1             = create_input('input', 'email', 'userEmail', 'email', 'on','Введите ваш email');
+            let label1            = create_label_forInput('input_label', 'email', 'E-mail');
             inputBlock1.append(input1);
             inputBlock1.append(label1);
 
-            let inputBlock2      = create_input_block('input_block');
-            let input2         = create_input('input', 'password', 'userPassword', 'password','current-password', 'Введите ваш пароль');
-            let label2         = create_label_forInput('input_label', 'password', 'Пароль');
+            let inputBlock2         = create_input_block('input_password_block');
+            let viewPasswordIcon = createViewIcon(show_hide_password);
+            let input2             = create_input('input', 'password', 'userPassword', 'password','current-password', 'Введите ваш пароль');
+            let label2            = create_label_forInput('input_label', 'password', 'Пароль');
             inputBlock2.append(input2);
             inputBlock2.append(label2);
+            inputBlock2.append(viewPasswordIcon);
 
             inputBox.append(inputBlock1);
             inputBox.append(inputBlock2);
 
             // Создаем кнопки
-            let buttonBox        = create_button_box('button_box');
-            let button1       = create_button('button', 'Войти', loginUser);
-            let button2       = create_button('button', 'Зарегистрироваться', goToRegister);
+            let buttonBox          = create_button_box('button_box');
+            let button1         = create_button('button', 'Войти', loginUser);
+            let button2         = create_button('button', 'Зарегистрироваться', goToRegister);
+
 
 
             buttonBox.append(button1);
             buttonBox.append(button2);
 
-            // Добавляем все элементы в content
-            content.append(contentText);
-            content.append(inputBox);
-            content.append(buttonBox);
+            loginBlock.append(contentText);
+            loginBlock.append(inputBox);
+            loginBlock.append(buttonBox);
+            content.append(loginBlock);
 
             document.body.append(content);
 
@@ -46,18 +51,18 @@
         content.classList.add(contentClass);
         return content;
     }
+     function create_div(divClass) {
+         let div = document.createElement('div');
+         div.classList.add(divClass);
+         return div;
+     }
+
 
     function create_content_text(textClass, text) {
         let contentText = document.createElement('h2');
         contentText.classList.add(textClass);
         contentText.textContent = text;
         return contentText;
-    }
-
-    function create_input_box(inputBoxClass) {
-        let inputBox = document.createElement('div');
-        inputBox.classList.add(inputBoxClass);
-        return inputBox;
     }
 
     function create_input_block(inputBlockClass) {
@@ -75,7 +80,16 @@
         input.setAttribute('autocomplete', autocomplete);
         input.setAttribute('placeholder', placeholder);
         return input;
-        return input;
+
+    }
+
+    function createViewIcon (clickFunction) {
+        let view = document.createElement('a');
+        view.classList.add("password_view_hide");
+        view.setAttribute('id', 'show_view');
+        view.addEventListener("click", clickFunction);
+        return view;
+
     }
 
     function create_form (formClass, method) {
@@ -111,5 +125,6 @@
         document.querySelector(".content_login-reg").remove();
         app.PageRegister.draw();
     }
+
 
 })(AdsBoard);

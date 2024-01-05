@@ -5,7 +5,7 @@
             let header             = create_div ('header');
 
             let containerHeader   = create_div ('container_productList-header');
-            let headerLogo     = create_header_logo ('header_logo', '#link_to_main', 'МояОбъява.RU')
+            let headerLogo     = create_header_logo ()
             let headerNav         = create_div ('header_nav');
             let headerNavList  = create_button('header_a',"Лента", goToProductList);
             let headerNavMyAds = create_button('header_a',"Мои объявления", goToMyProducts );
@@ -32,14 +32,17 @@
         }
         return content;
     }
-
-    function create_header_logo (headerLogoClass, link, text) {
+    0
+    function create_header_logo () {
         let headerLogo = document.createElement('a');
-        headerLogo.classList.add(headerLogoClass);
-        headerLogo.setAttribute('href', link);
-        headerLogo.textContent = text;
+        headerLogo.classList.add('header_logo');
+        headerLogo.setAttribute('href', '#link_to_main');
+        headerLogo.textContent = 'Билборд';
+        headerLogo.addEventListener("click", goToProductList);
         return headerLogo;
     }
+
+
 
     function create_header_nav_link (headerNavLinkClass, link, text, clickFunction) {
         let headerLink = document.createElement("a");

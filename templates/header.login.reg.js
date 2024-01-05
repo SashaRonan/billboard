@@ -2,9 +2,9 @@
     app.HeaderLoginReg = {
         draw: function () {
 
-            let header             = create_header_tag();
-            let container        = create_header_container();
-            let headerLogo    = create_header_logo();
+            let header               = create_header_tag();
+            let container           = create_header_container();
+            let headerLogo      = create_header_logo();
 
             container.append(headerLogo);
             header.append(container);
@@ -30,7 +30,8 @@
         let headerLogo = document.createElement('a');
         headerLogo.classList.add('header_logo');
         headerLogo.setAttribute('href', '#link_to_main');
-        headerLogo.textContent = 'МояОбъява.RU';
+        headerLogo.textContent = 'Билборд';
+        headerLogo.addEventListener("click", goToLogin);
         return headerLogo;
     }
 

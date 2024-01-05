@@ -36,7 +36,6 @@ function registerUser() {
         .then(
             response => {
                 if (!response.ok) {
-                    // throw new Error(response.status + ' ' + response.statusText);
                     return response.text().then(text => {
                         throw new Error(text)
                     });
@@ -86,7 +85,6 @@ function loginUser() {
         .then(
             result => {
                 if (result.status) {
-                    alert(result.message)
                     goToProductList();
                 } else {
                     alert(result.message);
@@ -113,7 +111,7 @@ function LogOut() {
         )
         .then(
             result => {
-                alert('Вы вышли из системы')
+
                 document.body.innerHTML = '';
                 AdsBoard.HeaderLoginReg.draw();
                 AdsBoard.PageLogin.draw();
@@ -256,8 +254,6 @@ function deleteProduct() {
         .then(
             result => {
                 if (result.status === true) {
-                    alert(result.message);
-                    console.dir(result.message);
                     document.body.innerHTML = '';
                     goToMyProducts()
                 } else if (result.status === false) {
@@ -348,6 +344,21 @@ function saveUpdateProduct() {
                 }
             }
         )
+}
+
+function show_hide_password () {
+    let inputPassword = document.querySelector('#userPassword');
+    let inputPasswordType = inputPassword.getAttribute('type');
+    let showViewID = this.id
+    let showView = document.getElementById(showViewID);
+
+    if (inputPasswordType === 'password') {
+        showView.classList.add('view');
+        inputPassword.setAttribute('type', 'text');
+    } else {
+        showView.classList.remove('view');
+        inputPassword.setAttribute('type', 'password');
+    }
 }
 
 

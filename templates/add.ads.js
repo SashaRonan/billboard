@@ -4,6 +4,7 @@
 
 
             let content = create_div('content_add-ads');
+            let addBlock = create_div('login_block_add');
 
             let inputNameBlock = create_div('input_ads_block');
             let labelForName = create_label_forInput('input_ads_label', 'product_name', 'Название');
@@ -27,7 +28,7 @@
 
             let uploadFileSaveBlock = create_div('product_img-box')
             let uploadFileImg = create_div('product_img');
-            let uploadImgPreview = create_img ('upload_img_file', 'imgPreview');
+            let uploadImgPreview = create_img('upload_img_file', 'imgPreview');
 
             let saveFileButton = create_button('Сохранить', addMyProduct);
 
@@ -44,10 +45,16 @@
             inputFileBox.append(inputFileLabel);
             uploadFileBox.append(inputFileBox);
 
-            content.append(inputNameBlock);
-            content.append(inputDescriptionBlock);
-            content.append(inputPriceBlock);
-            content.append(uploadFileBox);
+            addBlock.append(inputNameBlock);
+            addBlock.append(inputDescriptionBlock);
+            addBlock.append(inputPriceBlock);
+            addBlock.append(uploadFileBox);
+
+            // content.append(inputNameBlock);
+            // content.append(inputDescriptionBlock);
+            // content.append(inputPriceBlock);
+            // content.append(uploadFileBox);
+            content.append(addBlock);
 
             document.body.append(content);
 
@@ -55,7 +62,7 @@
     }
 
 
-    function create_div(divClass){
+    function create_div(divClass) {
         let content = document.createElement('div');
         let array = divClass.split(' ');
         for (let i = 0, length = array.length; i < length; i++) {
@@ -86,7 +93,7 @@
         return input;
     }
 
-    function create_img (uploadImgFileClass, id) {
+    function create_img(uploadImgFileClass, id) {
         let img = document.createElement('img');
         img.setAttribute('id', id);
         // input.classList.add(inputFileClass);
@@ -94,10 +101,10 @@
         return img;
     }
 
-    function loadPreviewImg (event) {
+    function loadPreviewImg(event) {
         let output = document.getElementById('imgPreview');
         output.src = URL.createObjectURL(event.target.files[0]);
-        output.onload = function() {
+        output.onload = function () {
             URL.revokeObjectURL(output.src) // free memory
         }
         return output.onload;

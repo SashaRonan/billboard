@@ -5,9 +5,10 @@
         draw: function () {
 
             let content = create_div ('content_login-reg');
+            let registerBlock = create_div('login_block');
             let contentText = create_content_text('content_text', 'Регистрация');
 
-            let inputBox = create_form ('input_box', 'POST');
+            let inputBox = create_div('input_box');
 
             let inputBlock1 = create_div ('input_block');
             let input1 = create_input('input', 'email', 'email', 'email','field-name', 'Введите ваш email');
@@ -54,9 +55,13 @@
             buttonBox.append(button2);
             inputBox.append(buttonBox);
 
+
+            registerBlock.append(contentText);
+            registerBlock.append(inputBox);
+            content.append(registerBlock);
             // Добавляем все элементы в content
-            content.append(contentText);
-            content.append(inputBox);
+            // content.append(contentText);
+            // content.append(inputBox);
             // content.append(buttonBox);
 
             document.body.append(content);
@@ -80,6 +85,8 @@
         form.setAttribute('autocomplete', 'on');
         return form;
     }
+
+
 
     function create_content_text(contentTextClass, text) {
         let contentText = document.createElement('h2');
@@ -120,6 +127,7 @@
         return button;
     }
 
+
     function create_hide_show_eye () {
         let hideShowEye = document.createElement('a');
         hideShowEye.classList.add('password-control');
@@ -144,6 +152,8 @@
         document.querySelector(".content_login-reg").remove();
         app.PageLogin.draw();
     }
+
+
 
     function clickLoginButton() {
         alert('Вы успешно зарегистрировались. Или нет. Пока непонятно');
