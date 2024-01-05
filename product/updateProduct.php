@@ -8,19 +8,26 @@ $product = new \objects\Product();
 
 $userId = $_SESSION['user_id'];
 
-//$putdata = file_get_contents('php://input', true);
-//$productParams = explode('&', $putdata);
-//
-//$_PATCH = [];
-//foreach ($productParams as $pair) {
-//    $item = explode('=', $pair);
-//    if (count($item) == 2) {
-//        $_PATCH[urldecode($item[0])] = urldecode($item[1]);
-//    }
-//}
 
 
-$putData = file_get_contents('php://input');
-$_PATCH = json_decode($putData, true);
 
-$product->updateProduct();
+if (isset($_FILES["myProduct"]["name"])) {
+    $productImg = "img/products/" . $_FILES["myProduct"]["name"];
+    $productImgPath = "../img/products/" . $_FILES["myProduct"]["name"];
+} else {
+    $productImg = '#';
+}
+
+if (isset($_POST['product_name']) && isset($_POST['product_description']) && isset($_POST['product_price']) ) {
+    $productID = $_POST['product_id'];
+    $productName = $_POST['product_name'];
+    $description = $_POST['product_description'];
+    $price = $_POST['product_price'];
+
+    if (move_uploaded_file($_FILES["myProduct"]["tmp_name"],$productImgPath)) {
+        $product->updateProduct($productID, $productName, $description, $price, $productImg);
+    }
+} else {
+    echo json_encode(["status" => false, "message" => "Ошибка обновления."]);
+}
+

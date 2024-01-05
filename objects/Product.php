@@ -79,73 +79,22 @@ class Product extends Database
 //    функция для нового товара в БД
     public function createProduct($productName, $description, $userId, $price, $productImg)
     {
-
             $stmt = mysqli_prepare(Database::connect(), "INSERT INTO `products` (`product_name`, `description`, `select_user_id`, `price`, `product_img`) VALUES (?, ?, ?, ?, ?)");
             mysqli_stmt_bind_param($stmt, "ssiis", $productName, $description, $userId, $price, $productImg);
             mysqli_stmt_execute($stmt);
             echo json_encode(["status" => true, "message" => "Успешная регистрация продукта"]);
-
-
     }
 
 
     //    функция для обновления любого параметра товара в БД по его ID
-    public function updateProduct()
+    public function updateProduct($productID, $productName, $description, $price, $productImg)
     {
-        //  Создаем массив $_PUT, в который записываем параметры с полученного файла методом PUT
-        $putdata = file_get_contents('php://input', true);
-        $productParams = explode('&', $putdata);
 
-        $_PUT = [];
-        foreach ($productParams as $pair) {
-            $item = explode('=', $pair);
-            if (count($item) == 2) {
-                $_PUT[urldecode($item[0])] = urldecode($item[1]);
-            }
-        }
+        $stmt = mysqli_prepare(Database::connect(), "UPDATE `products` SET `product_name`= ?,`description`= ?,`price`= ?,`product_img`= ? WHERE `product_id` = ?");
 
-        if (!empty($_PUT['productId'])) {
-
-            $productIdString = "`product_id` = '" . $_PUT['productId'] . "'";
-
-            // Проверяем, какие из параметров товара необходимо обновить и строим нужный запрос SQL
-            if (!empty($_PUT['productName']) && !empty($queryString)) {
-                $queryString = $queryString . ", `product_name`='" . $_PUT['productName'] . "'";
-            } elseif (!empty($_PUT['productName']) && empty($queryString)) {
-                $queryString = "`product_name`='" . $_PUT['productName'] . "'";
-            }
-
-            if (!empty($_PUT["description"]) && !empty($queryString)) {
-                $queryString = $queryString . ", `description`='" . $_PUT['description'] . "'";
-            } elseif (!empty($_PUT["description"]) && empty($queryString)) {
-                $queryString = "`description`='" . $_PUT['description'] . "'";
-            }
-
-            if (!empty($_PUT["userId"]) && !empty($queryString)) {
-                $queryString = $queryString . ", `select_user_id`='" . $_PUT['userId'] . "'";
-            } elseif (!empty($_PUT["userId"]) && empty($queryString)) {
-                $queryString = "`select_user_id`='" . $_PUT['userId'] . "'";
-            }
-
-            if (!empty($_PUT["price"]) && !empty($queryString)) {
-                $queryString = $queryString . ", `price`='" . $_PUT['price'] . "'";
-            } elseif (!empty($_PUT["price"]) && empty($queryString)) {
-                $queryString = "`price`='" . $_PUT['price'] . "'";
-            }
-
-            if (!empty($_PUT["productURL"]) && !empty($queryString)) {
-                $queryString = $queryString . ", `product_img`='" . $_PUT['productURL'] . "'";
-            } elseif (!empty($_PUT["productURL"]) && empty($queryString)) {
-                $queryString = "`product_img`='" . $_PUT['productURL'] . "'";
-            }
-
-            echo $queryString;
-            Database::query("UPDATE `products` SET" . $queryString . "WHERE" . $productIdString);
-            echo "Параметры товара с ID = " . $_PUT['productId'] . " обновлены";
-
-        } else {
-            echo "Не указан ID товара";
-        }
+        mysqli_stmt_bind_param($stmt, "ssisi", $productName, $description, $price, $productImg, $productID);
+        mysqli_stmt_execute($stmt);
+        echo json_encode(["status" => true, "message" => "успех"]);
     }
 
     //функция для удаления конкретного товара по его ID

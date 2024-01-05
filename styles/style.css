@@ -467,6 +467,8 @@
 
 .edit_description_box {
     padding-top: 16px;
+    padding-left: 3px;
+    padding-right: 3px;
 }
 
 .edit_price {
@@ -479,5 +481,39 @@
     align-self: start;
     border: 1px solid #ccc;
     outline: none;
-
 }
+
+.change_img {
+    display: flex;
+    justify-content: center;
+    color: white;
+    align-items: center;
+    width: 150px;
+    height: 30px;
+    border: 1px solid #0EA5E9;
+    background: #0EA5E9;
+    border-radius: 2px;
+    margin-right: 32%;
+    margin-top: 15px;
+}
+
+.edit_product_bottom_block {
+    align-self: end;
+    width: 122%;
+    display: flex;
+    justify-content: end;
+}
+
+.edit_button {
+    font-family: Inter;
+    color: white;
+    width: 150px;
+    height: 30px;
+    border: 1px solid #0EA5E9;
+    background: #0EA5E9;
+    margin-top: 15px;
+    border-radius: 2px;
+    margin-left: 45px;
+}
+
+

@@ -44,7 +44,7 @@
 
             let productBottomDiv = create_div('product_bottom_block');
 
-            let button_edit = create_button(editButtonID, 'Изменить', updateProduct);
+            let button_edit = create_button(editButtonID, 'Изменить', goToFormUpdateProduct);
             let button_delete = create_button(deleteButtonID, 'Удалить', deleteProduct);
             productBottomDiv.append(button_edit);
             productBottomDiv.append(button_delete);

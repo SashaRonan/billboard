@@ -1,22 +1,23 @@
 (function (app) {
     app.EditProduct = {
         draw: function (
-            saveButtonId,
-            deleteButtonId,
-            productNameID,
-            productDescriptionID,
-            productPriceID,
+            productID,
+            // saveButtonId,
+            // deleteButtonId,
+            // productNameID,
+            // productDescriptionID,
+            // productPriceID,
             productName,
             productDescription,
             productPrice,
-            productImgSrc) {
-
-            // let content = create_div("content_product_add container_login_header")
+            productImgSrc
+        )
+        {
 
             let productBlock = create_div('product_block_add');
             let productImgBox = create_div('product_img-box');
             let productImgDiv = create_div('product_img');
-            let productImg = create_img(productImgSrc);
+            let productImg = create_img('img_' + productID, productImgSrc);
 
             productImgDiv.append(productImg);
             productImgBox.append(productImgDiv);
@@ -27,17 +28,17 @@
 
             let productDescriptionBox = create_div('product_description-box_add')
             let productNameDescriptionBox = create_div('edit_description_box');
-            let productNameBlock = create_input('edit_productName', productNameID);
+            let productNameBlock = create_input('edit_productName', 'productName_' + productID);
             productNameBlock.value = productName;
 
-            let productDescriptionBlock = create_textarea(productDescriptionID);
+            let productDescriptionBlock = create_textarea('description_' + productID);
             productDescriptionBlock.value = productDescription;
 
             productNameDescriptionBox.append(productNameBlock);
             productNameDescriptionBox.append(productDescriptionBlock);
             productDescriptionBox.append(productNameDescriptionBox);
 
-            let productPriceBlock = create_input('edit_price', productPriceID);
+            let productPriceBlock = create_input('edit_price', 'price_' + productID);
             productPriceBlock.value = productPrice;
 
             productTopDiv.append(productDescriptionBox);
@@ -45,10 +46,17 @@
             productRightDiv.append(productTopDiv);
 
 
-            let productBottomDiv = create_div('product_bottom_block');
+            let productBottomDiv = create_div('edit_product_bottom_block');
 
-            let button_edit = create_button(saveButtonId, 'Сохранить');
-            let button_delete = create_button(deleteButtonId, 'Удалить');
+
+            let inputFileLabel = create_label_forInput('change_img', 'product_change', 'Загрузить');
+            let inputFileButton = create_load_file_button('upload_button_input', 'product_change',  loadPreviewImg);
+            inputFileLabel.append(inputFileButton);
+
+
+            let button_edit = create_button('edit_button', 'save_' + productID, 'Сохранить', saveUpdateProduct);
+            let button_delete = create_button('edit_button', "del_" + productID, 'Удалить', deleteProduct);
+            productBottomDiv.append(inputFileLabel);
             productBottomDiv.append(button_edit);
             productBottomDiv.append(button_delete);
 
@@ -88,19 +96,58 @@
         return textarea;
     }
 
-    function create_img(src) {
+    function create_img(id, src) {
         let img = document.createElement("img");
         img.setAttribute('src', src);
+        img.setAttribute('id', id);
         img.classList.add('upload_img_file');
+
         return img;
     }
 
-    function create_button(id, text, clickFunction) {
+    function create_label_forInput(labelClass, labelFor, text) {
+        let label = document.createElement('label');
+        label.classList.add(labelClass);
+        label.setAttribute('for', labelFor);
+        label.textContent = text;
+        return label;
+    }
+
+    function create_load_file_button(inputFileClass, id, loadFunction) {
+        let input = document.createElement('input');
+        input.classList.add(inputFileClass);
+        input.setAttribute('type', 'file');
+        input.setAttribute('id', id);
+
+        input.setAttribute('accept', 'image/*');
+        input.setAttribute('onchange', loadFunction);
+        input.addEventListener('change', loadFunction);
+        return input;
+    }
+
+    // function create_img (uploadImgFileClass, id) {
+    //     let img = document.createElement('img');
+    //     img.setAttribute('id', id);
+    //     // input.classList.add(inputFileClass);
+    //     img.classList.add(uploadImgFileClass);
+    //     return img;
+    // }
+
+    function loadPreviewImg (event, productID) {
+        let output = document.getElementById('img_' + productID);
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function() {
+            URL.revokeObjectURL(output.src) // free memory
+        }
+        return output.onload;
+    }
+
+    function create_button(buttonClass, id, text, clickFunction) {
         let button = document.createElement('button');
-        button.classList.add('product_button');
+        button.classList.add(buttonClass);
         button.setAttribute('id', id);
         button.textContent = text;
-        // button.addEventListener("click", clickFunction);
+        button.addEventListener("click", clickFunction);
         return button;
     }
 
