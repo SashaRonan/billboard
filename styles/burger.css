@@ -51,12 +51,6 @@
     border: none;
     cursor: pointer;
 
-    /*background-color: rgba(0, 0, 0, 0.3);*/
-    /*!*border-radius: 10px;*!*/
-    /*backdrop-filter: blur(3px);*/
-    /*border: 2px solid rgba(255, 255, 255, 0.5);*/
-    /*box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);*/
-
 }
 .burger_a:first-child {
     margin-top: 30px;
@@ -81,18 +75,13 @@
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
 
-    /*border-radius: 40px;*/
-    /*backdrop-filter: blur(1px);*/
-    /*background-color: rgb(187 182 182 / 30%);*/
-    /*!*border: 2px solid rgba(255, 255, 255, 0.5);*!*/
-    /*box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);*/
 }
 
 .ham:hover {
     border-radius: 40px;
-    /*backdrop-filter: blur(1px);*/
+
     background-color: #abcad7;
-    /*box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);*/
+
 }
 
 .hamRotate.active {

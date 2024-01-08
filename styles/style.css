@@ -23,7 +23,6 @@
     src: url("fonts/anebock.ttf");
 }
 
-
 body {
     background: url("../img/backgrounds/background1.jpg");
     background-size: 100%
@@ -51,9 +50,7 @@ body {
 }
 
 .header_logo {
-    /*width: 10%;*/
-
-align-items: center;
+    align-items: center;
     display: flex;
     cursor: pointer;
 }
@@ -64,21 +61,15 @@ align-items: center;
 
 .header_link {
     font-family: "Anebock", sans-serif;
-    font-size:30px;
+    font-size: 30px;
     color: #274358;
     margin-left: 5px;
-
 }
 
 .header_logo:hover {
     transform: translate(2px, -2px);
     transition-duration: 0.5s
 }
-
-/*.header_logo_img:hover {*/
-/*    transform: translate(0px, -1px);*/
-/*    transition-duration: 0.5s;*/
-/*}*/
 
 .header_text {
     color: white;
@@ -90,7 +81,6 @@ align-items: center;
 }
 
 .header_a {
-
     color: #274358;
     font-size: 16px;
     font-weight: 600;
@@ -119,14 +109,12 @@ align-items: center;
     transform: translateY(2px);
 }
 
-
 .container_login_header {
     width: 800px;
     padding-right: 16px;
     padding-left: 16px;
     margin: 0 auto;
     display: flex;
-
 }
 
 .container_productList-header {
@@ -180,7 +168,6 @@ align-items: center;
     justify-content: space-between;
     margin: 0 auto;
     padding: 0 20px;
-
 }
 
 .content_product_add {
@@ -200,14 +187,12 @@ align-items: center;
     position: relative;
     top: 40px;
     padding-bottom: 20px;
-
     max-width: 800px;
     padding-right: 16px;
     padding-left: 16px;
     margin: 0 auto;
     display: flex;
 }
-
 
 .content_text {
     color: #284459;
@@ -236,7 +221,6 @@ align-items: center;
     display: flex;
     flex-direction: column;
     padding: 0 20px 30px;
-
     background-color: rgba(255, 255, 255, 0.13);
     border-radius: 10px;
     backdrop-filter: blur(5px);
@@ -247,8 +231,6 @@ align-items: center;
 
 .input_box {
     width: 100%;
-    /*margin-top: 27px;*/
-    /*margin-bottom: 16px;*/
 }
 
 .input_block {
@@ -285,7 +267,6 @@ align-items: center;
     color: #284459;
     font-size: 16px;
     font-family: 'Inter', sans-serif;
-    /*font-style: italic;*/
     padding-top: 5px;
 }
 
@@ -330,7 +311,6 @@ align-items: center;
     padding: 20px 20px;
     margin: 10px 0;
     background-color: rgba(255, 255, 255, 0.13);
-    /*background-color: rgba(0, 0, 0, 0.1);*/
     border-radius: 10px;
     backdrop-filter: blur(3px);
     border: 2px solid rgba(255, 255, 255, 0.1);
@@ -382,8 +362,6 @@ align-items: center;
 }
 
 .product_button {
-
-
     font-family: "Inter", sans-serif;
     color: white;
     width: 150px;
@@ -424,7 +402,6 @@ align-items: center;
     font-family: "Inter", sans-serif;
     font-size: 17px;
     font-weight: 400;
-    /*display: inline-flex;*/
     justify-content: center;
     height: 30px;
     align-items: center;
@@ -452,7 +429,6 @@ align-items: center;
     justify-content: space-between;
     height: 100%;
     padding-right: 10px;
-
 }
 
 .product_name-description-box {
@@ -527,7 +503,6 @@ align-items: center;
     justify-content: space-between;
 }
 
-
 .content_add-ads {
     padding: 0 20px;
     margin: 0 auto;
@@ -579,6 +554,7 @@ align-items: center;
     color: #284459;
     font-size: 16px;
 }
+
 .upload_img-box {
     width: 100%;
     margin-top: 32px;
@@ -603,18 +579,22 @@ align-items: center;
     cursor: pointer;
     margin-left: 20px;
 }
+
 .upload_button:hover {
     border: 1px solid #4c5b72;
     background: #4c5b72;
 }
+
 .upload_button:active {
     border: 1px solid #976e76;
     background-color: #976e76;
     transform: translateY(2px);
 }
+
 .upload_button_input {
     display: none;
 }
+
 .upload_img_file {
     width: 85%;
     height: 85%;
@@ -624,6 +604,7 @@ align-items: center;
 .upload_img_file_add {
     width: 35%;
 }
+
 .password {
     position: relative;
 }
@@ -713,7 +694,6 @@ align-items: center;
     border: 1px solid #284459;
     background: #284459;
     border-radius: 10px;
-
     margin-top: 15px;
     cursor: pointer;
 }
@@ -810,14 +790,10 @@ align-items: center;
     .header_nav {
         display: none;
     }
-    .header_logo {
-        /*display: inline-block;*/
-        /*align-self: center;*/
 
-    }
 
     .container_productList-header {
-      display: flex;
+        display: flex;
         align-items: center;
     }
 
@@ -868,7 +844,6 @@ align-items: center;
         flex-direction: column;
         align-items: center;
         width: 100%;
-
     }
 
     .change_img {
@@ -884,7 +859,7 @@ align-items: center;
     }
 
     .product-box_add {
-flex-direction: column;
+        flex-direction: column;
         align-self: center;
     }
 
@@ -895,13 +870,12 @@ flex-direction: column;
 
     .upload_save_button {
         margin-top: 30px;
-align-self: center;
+        align-self: center;
     }
 
     .login_block_add {
         margin-top: 114px;
     }
-
 }
 
 

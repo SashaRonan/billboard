@@ -7,8 +7,6 @@ $product = new \objects\Product();
 
 $userId = $_SESSION['user_id'];
 
-
-
 if (isset($_FILES["myProduct"]["name"])) {
     $productImg = "img/products/" . $_FILES["myProduct"]["name"];
     $productImgPath = "../img/products/" . $_FILES["myProduct"]["name"];
