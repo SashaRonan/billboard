@@ -2,23 +2,25 @@
     app.PageLogin = {
         draw: function () {
 
-            let content             = create_content_div('content_login-reg');
-            let loginBlock         = create_div('login_block');
+            let content                            = AdsBoard.Create.divWithID('content_login goLogin', 'content_log_reg');
 
-            let contentText    = create_content_text('content_text', 'Вход')
+            let loginBlock                          = AdsBoard.Create.div('login_block');
 
-            let inputBox          = create_form ('input_box', 'GET');
+            let contentText                        = AdsBoard.Create.header('content_text','content_text', 'Вход');
+            let inputBox                           = AdsBoard.Create.div('input_box');
 
-            let inputBlock1         = create_input_block('input_block');
-            let input1             = create_input('input', 'email', 'userEmail', 'email', 'on','Введите ваш email');
-            let label1            = create_label_forInput('input_label', 'email', 'E-mail');
+            let inputBlock1                        = AdsBoard.Create.div('input_block');
+            let input1                             = AdsBoard.Create.input('input','userEmail','email', 'Введите ваш email') ;
+            let label1                             = AdsBoard.Create.label('input_label', 'input_label', 'userEmail', 'E-mail')
+
             inputBlock1.append(input1);
             inputBlock1.append(label1);
 
-            let inputBlock2         = create_input_block('input_password_block');
-            let viewPasswordIcon = createViewIcon(show_hide_password);
-            let input2             = create_input('input', 'password', 'userPassword', 'password','current-password', 'Введите ваш пароль');
-            let label2            = create_label_forInput('input_label', 'password', 'Пароль');
+            let inputBlock2                        = AdsBoard.Create.div('input_password_block');
+            let viewPasswordIcon                   = AdsBoard.Create.link("viewHide",'showView_1', AdsBoard.Functions.show_hide_password);
+            let input2                             = AdsBoard.Create.input('input','password_1','password', 'Введите ваш пароль') ;
+            let label2                             = AdsBoard.Create.label('input_label', 'password', 'password_1','Пароль', );
+
             inputBlock2.append(input2);
             inputBlock2.append(label2);
             inputBlock2.append(viewPasswordIcon);
@@ -26,12 +28,9 @@
             inputBox.append(inputBlock1);
             inputBox.append(inputBlock2);
 
-            // Создаем кнопки
-            let buttonBox          = create_button_box('button_box');
-            let button1         = create_button('button', 'Войти', loginUser);
-            let button2         = create_button('button', 'Зарегистрироваться', goToRegister);
-
-
+            let buttonBox                          = AdsBoard.Create.div('button_box');
+            let button1                            = AdsBoard.Create.button('button', 'Войти', AdsBoard.Functions.loginUser);
+            let button2                            = AdsBoard.Create.button('button', 'Зарегистрироваться', AdsBoard.Functions.goToRegister);
 
             buttonBox.append(button1);
             buttonBox.append(button2);
@@ -45,86 +44,4 @@
 
         }
     }
-
-    function create_content_div(contentClass) {
-        let content = document.createElement('div');
-        content.classList.add(contentClass);
-        return content;
-    }
-     function create_div(divClass) {
-         let div = document.createElement('div');
-         div.classList.add(divClass);
-         return div;
-     }
-
-
-    function create_content_text(textClass, text) {
-        let contentText = document.createElement('h2');
-        contentText.classList.add(textClass);
-        contentText.textContent = text;
-        return contentText;
-    }
-
-    function create_input_block(inputBlockClass) {
-        let inputBlock = document.createElement('div');
-        inputBlock.classList.add(inputBlockClass);
-        return inputBlock;
-    }
-
-    function create_input(inputClass, type, id, name, autocomplete, placeholder) {
-        let input = document.createElement('input');
-        input.classList.add(inputClass);
-        input.setAttribute('type', type);
-        input.setAttribute('id', id);
-        input.setAttribute('name', name);
-        input.setAttribute('autocomplete', autocomplete);
-        input.setAttribute('placeholder', placeholder);
-        return input;
-
-    }
-
-    function createViewIcon (clickFunction) {
-        let view = document.createElement('a');
-        view.classList.add("password_view_hide");
-        view.setAttribute('id', 'show_view');
-        view.addEventListener("click", clickFunction);
-        return view;
-
-    }
-
-    function create_form (formClass, method) {
-        let form = document.createElement('form');
-        form.classList.add(formClass)
-        form.setAttribute('method', method);
-        return form;
-    }
-
-    function create_label_forInput(labelClass, labelFor, text) {
-        let label = document.createElement('label');
-        label.classList.add(labelClass);
-        label.setAttribute('for', labelFor);
-        label.textContent = text;
-        return label;
-    }
-
-    function create_button_box(buttonBoxClass) {
-        let buttonBox = document.createElement('div');
-        buttonBox.classList.add(buttonBoxClass);
-        return buttonBox;
-    }
-
-    function create_button(buttonClass, text, clickFunction) {
-        let button = document.createElement('button');
-        button.classList.add(buttonClass);
-        button.textContent = text;
-        button.addEventListener("click", clickFunction);
-        return button;
-    }
-
-    function goToRegister() {
-        document.querySelector(".content_login-reg").remove();
-        app.PageRegister.draw();
-    }
-
-
 })(AdsBoard);

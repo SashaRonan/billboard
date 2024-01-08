@@ -30,7 +30,7 @@ class Product extends Database
     //функция для получения полного списка товаров с БД
     public function getProductsList()
     {
-        $selectProductsQuery = Database::query("SELECT `product_name`,`description`,`price`,`product_img`,`name`,`phone` FROM `products` LEFT OUTER JOIN `users` ON `select_user_id` = `user_id`");
+        $selectProductsQuery = Database::query("SELECT `product_id`, `product_name`,`description`,`price`,`product_img`,`name`,`phone` FROM `products` LEFT OUTER JOIN `users` ON `select_user_id` = `user_id`");
         while ($numRows = Database::fetch($selectProductsQuery)) {
             $productsList [] = $numRows;
         }
@@ -84,7 +84,6 @@ class Product extends Database
             mysqli_stmt_execute($stmt);
             echo json_encode(["status" => true, "message" => "Успешная регистрация продукта"]);
     }
-
 
     //    функция для обновления любого параметра товара в БД по его ID
     public function updateProduct($productID, $productName, $description, $price, $productImg)

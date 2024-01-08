@@ -2,64 +2,36 @@
     app.HeaderProductList = {
         draw: function () {
 
-            let header             = create_div ('header');
+            let header          = AdsBoard.Create.div('header')
+            let containerHeader = AdsBoard.Create.div('container_productList-header')
 
-            let containerHeader   = create_div ('container_productList-header');
-            let headerLogo     = create_header_logo ()
-            let headerNav         = create_div ('header_nav');
-            let headerNavList  = create_button('header_a',"Лента", goToProductList);
-            let headerNavMyAds = create_button('header_a',"Мои объявления", goToMyProducts );
-            let headerNavExit  = create_button('header_a', "Выход", LogOut );
+            let headerLogo      = AdsBoard.Create.div('header_logo');
+            headerLogo.onclick                   = AdsBoard.Functions.goToProductList;
+
+            let logo           = AdsBoard.Create.img('header_logo_img', 'header_logo_img', 'img/logo/17.svg')
+            let link        = AdsBoard.Create.paragraph('header_link', 'header_link','Billboard')
+
+            let headerNav         = AdsBoard.Create.divWithID('header_nav', 'header_nav')
+
+            let headerNavList  = AdsBoard.Create.button('header_a',"Лента", AdsBoard.Functions.goToProductList);
+            let headerNavMyAds = AdsBoard.Create.button('header_a',"Мои объявления", AdsBoard.Functions.goToMyProducts );
+            let headerNavExit  = AdsBoard.Create.button('header_a', "Выход", AdsBoard.Functions.LogOut );
+
+            let burger                            = AdsBoard.Burger.draw();
+
+            headerLogo.append(logo);
+            headerLogo.append(link)
 
             headerNav.append(headerNavList);
             headerNav.append(headerNavMyAds);
             headerNav.append(headerNavExit);
             containerHeader.append(headerLogo);
             containerHeader.append(headerNav);
+            containerHeader.append(burger);
 
             header.append(containerHeader);
 
-            // Добавление заголовка на страницу
             document.body.append(header);
         }
     }
-
-    function create_div (divClass) {
-        let content = document.createElement('div');
-        let array = divClass.split(' ');
-        for (let i = 0, length = array.length; i < length; i++) {
-            content.classList.add(array[i]);
-        }
-        return content;
-    }
-    0
-    function create_header_logo () {
-        let headerLogo = document.createElement('a');
-        headerLogo.classList.add('header_logo');
-        headerLogo.setAttribute('href', '#link_to_main');
-        headerLogo.textContent = 'Билборд';
-        headerLogo.addEventListener("click", goToProductList);
-        return headerLogo;
-    }
-
-
-
-    function create_header_nav_link (headerNavLinkClass, link, text, clickFunction) {
-        let headerLink = document.createElement("a");
-        headerLink.classList.add(headerNavLinkClass);
-        headerLink.setAttribute('href', link);
-        headerLink.textContent = text;
-        headerLink.addEventListener("onclick", clickFunction);
-
-        return headerLink;
-    }
-
-    function create_button(buttonClass, text, clickFunction) {
-        let button = document.createElement('button');
-        button.classList.add(buttonClass);
-        button.textContent = text;
-        button.addEventListener("click", clickFunction);
-        return button;
-    }
-
 })(AdsBoard);

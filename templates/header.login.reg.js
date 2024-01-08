@@ -2,37 +2,22 @@
     app.HeaderLoginReg = {
         draw: function () {
 
-            let header               = create_header_tag();
-            let container           = create_header_container();
-            let headerLogo      = create_header_logo();
+            let header         = AdsBoard.Create.div('header');
+            let container      = AdsBoard.Create.div('container_login_header');
+            let headerLogo     = AdsBoard.Create.div('header_logo');
+            headerLogo.onclick                 = AdsBoard.Functions.goToLogin;
+            let logo         = AdsBoard.Create.img('header_logo_img', 'header_logo_img', 'img/logo/17.svg')
+            let link      = AdsBoard.Create.paragraph('header_link','header_link', 'Billboard')
 
+            headerLogo.append(logo);
+            headerLogo.append(link)
             container.append(headerLogo);
             header.append(container);
 
-            // Добавление заголовка на страницу
             document.body.append(header);
 
         }
     }
-    function create_header_tag () {
-        let header = document.createElement('header');
-        header.classList.add('header');
-        return header;
-    }
 
-    function create_header_container () {
-        let container = document.createElement('div');
-        container.classList.add('container_login_header');
-        return container;
-    }
-
-    function create_header_logo () {
-        let headerLogo = document.createElement('a');
-        headerLogo.classList.add('header_logo');
-        headerLogo.setAttribute('href', '#link_to_main');
-        headerLogo.textContent = 'Билборд';
-        headerLogo.addEventListener("click", goToLogin);
-        return headerLogo;
-    }
 
 })(AdsBoard);
