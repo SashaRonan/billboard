@@ -172,4 +172,4 @@
         }
 
     }
-})(AdsBoard);
+})(BillBoard);

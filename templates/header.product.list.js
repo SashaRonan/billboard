@@ -2,22 +2,22 @@
     app.HeaderProductList = {
         draw: function () {
 
-            let header          = AdsBoard.Create.div('header')
-            let containerHeader = AdsBoard.Create.div('container_productList-header')
+            let header          = BillBoard.Create.div('header')
+            let containerHeader = BillBoard.Create.div('container_productList-header')
 
-            let headerLogo      = AdsBoard.Create.div('header_logo');
-            headerLogo.onclick                   = AdsBoard.Functions.goToProductList;
+            let headerLogo      = BillBoard.Create.div('header_logo');
+            headerLogo.onclick                   = BillBoard.Functions.goToProductList;
 
-            let logo           = AdsBoard.Create.img('header_logo_img', 'header_logo_img', 'img/logo/17.svg')
-            let link        = AdsBoard.Create.paragraph('header_link', 'header_link','Billboard')
+            let logo           = BillBoard.Create.img('header_logo_img', 'header_logo_img', 'img/logo/17.svg')
+            let link        = BillBoard.Create.paragraph('header_link', 'header_link','Billboard')
 
-            let headerNav         = AdsBoard.Create.divWithID('header_nav', 'header_nav')
+            let headerNav         = BillBoard.Create.divWithID('header_nav', 'header_nav')
 
-            let headerNavList  = AdsBoard.Create.button('header_a',"Лента", AdsBoard.Functions.goToProductList);
-            let headerNavMyAds = AdsBoard.Create.button('header_a',"Мои объявления", AdsBoard.Functions.goToMyProducts );
-            let headerNavExit  = AdsBoard.Create.button('header_a', "Выход", AdsBoard.Functions.LogOut );
+            let headerNavList  = BillBoard.Create.button('header_a',"Лента", BillBoard.Functions.goToProductList);
+            let headerNavMyAds = BillBoard.Create.button('header_a',"Мои объявления", BillBoard.Functions.goToMyProducts );
+            let headerNavExit  = BillBoard.Create.button('header_a', "Выход", BillBoard.Functions.LogOut );
 
-            let burger                            = AdsBoard.Burger.draw();
+            let burger                            = BillBoard.Burger.draw();
 
             headerLogo.append(logo);
             headerLogo.append(link)
@@ -34,4 +34,4 @@
             document.body.append(header);
         }
     }
-})(AdsBoard);
+})(BillBoard);

@@ -1,7 +1,7 @@
-let AdsBoard = {};
+let BillBoard = {};
 document.addEventListener("DOMContentLoaded", function () {
-    AdsBoard.HeaderLoginReg.draw();
-    AdsBoard.PageLogin.draw();
+    BillBoard.HeaderLoginReg.draw();
+    BillBoard.PageLogin.draw();
 });
 
 
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (result.status === true) {
                             alert(result.message);
                             console.dir(result.message);
-                            AdsBoard.Functions.goToLogin();
+                            BillBoard.Functions.goToLogin();
                         } else {
                             console.dir(result.message);
                             alert(result.message);
@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(
                     result => {
                         if (result.status) {
-                            AdsBoard.Functions.goToProductList();
+                            BillBoard.Functions.goToProductList();
                         } else {
                             alert(result.message);
                         }
@@ -177,8 +177,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     result => {
 
                         document.body.innerHTML = '';
-                        AdsBoard.HeaderLoginReg.draw();
-                        AdsBoard.PageLogin.draw();
+                        BillBoard.HeaderLoginReg.draw();
+                        BillBoard.PageLogin.draw();
                     }
                 )
                 .catch(error => {
@@ -200,19 +200,19 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (result.status === false) {
                             alert(result.message)
                             document.body.innerHTML = '';
-                            AdsBoard.HeaderProductList.draw();
-                            AdsBoard.MyAdsAddButton.draw()
+                            BillBoard.HeaderProductList.draw();
+                            BillBoard.MyAdsAddButton.draw()
                         } else {
                             document.body.innerHTML = '';
-                            AdsBoard.HeaderProductList.draw();
-                            AdsBoard.MyAdsAddButton.draw()
+                            BillBoard.HeaderProductList.draw();
+                            BillBoard.MyAdsAddButton.draw()
 
                             for (let i = result.length - 1; i >= 0; i--) {
                                 let item = result[i];
 
                                 let productID = item['product_id'];
 
-                                AdsBoard.MyAds.draw(
+                                BillBoard.MyAds.draw(
                                     productID,
                                     item['product_name'],
                                     item['description'],
@@ -233,14 +233,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     .then(
                         result => {
                             document.body.innerHTML = '';
-                            AdsBoard.HeaderProductList.draw();
+                            BillBoard.HeaderProductList.draw();
                             for (let i = result.length - 1; i >= 0; i--) {
                                 let item = result[i];
 
                                 let productID = item['product_id'];
                                 // let buttonID = "button_id_" + productID;
 
-                                AdsBoard.ProductList.draw(
+                                BillBoard.ProductList.draw(
                                     productID,
                                     // buttonID,
                                     item['name'],
@@ -263,8 +263,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         goToAddNewProduct: function () {
             document.body.innerHTML = '';
-            AdsBoard.HeaderProductList.draw();
-            AdsBoard.PageAddAds.draw();
+            BillBoard.HeaderProductList.draw();
+            BillBoard.PageAddAds.draw();
         },
 
         addMyProduct: function () {
@@ -289,7 +289,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(
                     result => {
                         if (result.status == true) {
-                            AdsBoard.Functions.goToMyProducts()
+                            BillBoard.Functions.goToMyProducts()
                         } else if (result.status == false) {
                             console.dir(result.message);
                             alert(result.message);
@@ -308,7 +308,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     result => {
                         if (result.status === true) {
                             document.body.innerHTML = '';
-                            AdsBoard.Functions.goToMyProducts()
+                            BillBoard.Functions.goToMyProducts()
                         } else if (result.status === false) {
                             console.dir(result.message);
                             alert(result.message);
@@ -338,7 +338,7 @@ document.addEventListener("DOMContentLoaded", function () {
             getProduct.innerHTML = '';
 
             getProduct.appendChild(
-                AdsBoard.EditProduct.draw(
+                BillBoard.EditProduct.draw(
                     productID,
                     productName,
                     productDescription,
@@ -388,7 +388,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(
                     result => {
                         if (result.status == true) {
-                            AdsBoard.Functions.goToMyProducts()
+                            BillBoard.Functions.goToMyProducts()
                         } else if (result.status == false) {
                             console.dir(result.message);
                             alert(result.message);
@@ -398,4 +398,4 @@ document.addEventListener("DOMContentLoaded", function () {
         },
 
     }
-})(AdsBoard);
+})(BillBoard);
