@@ -1,6 +1,6 @@
 (function (app) {
     app.Burger = {
-        draw: function () {
+        draw: function () { // Создание кнопки бургера в хедере для адаптивного дизайна
 
             let burgerDiv           = BillBoard.Create.div("burger");
             let input             = BillBoard.Create.input("burger__toggle", 'burger__toggle', 'checkbox', '');

@@ -1,5 +1,7 @@
 <?php
 
+// Редактирование товара
+
 session_start();
 
 require_once('../objects/Product.php');
@@ -23,7 +25,12 @@ if (isset($_POST['product_name']) && isset($_POST['product_description']) && iss
     $description = $_POST['product_description'];
     $price = $_POST['product_price'];
 
-    $product->updateProduct($productID, $productName, $description, $price, $productImg);
+    $product->updateProduct(
+        $productID,
+        $productName,
+        $description,
+        $price,
+        $productImg);
 
 } else {
     echo json_encode(["status" => false, "message" => "Ошибка обновления."]);

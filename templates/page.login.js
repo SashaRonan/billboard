@@ -1,5 +1,6 @@
  (function (app) {
-    app.PageLogin = {
+    app.PageLogin = { // Создание HTML страницы авторизации пользователя
+
         draw: function () {
 
             let content                            = BillBoard.Create.divWithID('content_login goLogin', 'content_log_reg');

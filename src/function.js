@@ -8,15 +8,17 @@ document.addEventListener("DOMContentLoaded", function () {
 (function (app) {
     app.Functions = {
 
+        // Загрузка превьюшки изображения при добавлении нового товара
         loadPreviewAdd: function (event) {
             let output = document.getElementById('imgPreview');
             output.src = URL.createObjectURL(event.target.files[0]);
             output.onload = function () {
-                URL.revokeObjectURL(output.src) // free memory
+                URL.revokeObjectURL(output.src) // очистка
             }
             return output.onload;
         },
 
+        // Загрузка изображения при редактировании нового товара
         loadPreviewEdit: function () {
             let getID = this.id.split('_')[2];
             let output = document.querySelector('#img_' + getID);
@@ -27,16 +29,19 @@ document.addEventListener("DOMContentLoaded", function () {
             return output.onload;
         },
 
+        // Переход на страницу регистрации пользователя
         goToRegister: function () {
             document.querySelector(".content_login").remove();
             app.PageRegister.draw();
         },
 
+        // Переход на страницу входа в систему
         goToLogin: function () {
             document.querySelector(".goLogin").remove();
             app.PageLogin.draw();
         },
 
+        // Показать-скрыть пароль
         show_hide_password: function () {
             let showViewID = this.id.split('_')[1]
             let passwordID = 'password_' + showViewID;
@@ -53,6 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         },
 
+        // Показать-скрыть телефон
         show_hide_phone: function () {
 
             let numID = this.id.split('_')[1];
@@ -73,6 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         },
 
+        // Регистрация пользователя
         registerUser: function () {
             let userEmail = document.querySelector('#email').value;
             let userPhone = document.querySelector('#phone').value;
@@ -129,6 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
         },
 
+        // Вход в систему
         loginUser: function () {
             let userEmail = document.querySelector("#userEmail").value;
             let userPassword = document.querySelector('#password_1').value;
@@ -163,6 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
         },
 
+        // Выхоод из системы
         LogOut: function () {
             document.cookie = 'PHPSESSID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 
@@ -186,6 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
         },
 
+        // Переход на страницу с товарами авторизованного пользователя
         goToMyProducts: function () {
 
             fetch('product/productMyList.php', {
@@ -224,6 +234,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 )
         },
 
+        // Переход на основную страницу после авторизации (Страница со всеми товарами)
         goToProductList: function () {
             {
                 fetch('product/productList.php')
@@ -261,12 +272,14 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         },
 
+        // Переход на страницу добавления товара
         goToAddNewProduct: function () {
             document.body.innerHTML = '';
             BillBoard.HeaderProductList.draw();
             BillBoard.PageAddAds.draw();
         },
 
+        // Добавление нового товара
         addMyProduct: function () {
             let data = new FormData();
 
@@ -298,6 +311,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 )
         },
 
+        // Удаление товара
         deleteProduct: function () {
             let productID = this.id.split('_')[1];
             fetch('product/deleteProduct.php?productID=' + productID, {})
@@ -317,6 +331,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 )
         },
 
+        // Переход на форму редактирования товара
         goToFormUpdateProduct: function () {
             let productID = this.id.split('_')[1];
 
@@ -349,6 +364,47 @@ document.addEventListener("DOMContentLoaded", function () {
 
         },
 
+        // Получение данных товара (для сохранения после редактирования)
+        getProductByID: function (productID, parentElem) {
+
+            fetch('product/getProductByID.php?productID=' + productID)
+                .then(
+                    response => response.json(),
+                )
+                .then(
+                    result => {
+                        console.log(result);
+
+                        for (let i = result.length - 1; i >= 0; i--) {
+                            let item = result[i];
+
+                            let productID = item['product_id'];
+                            console.dir(productID);
+                            console.dir(item['product_name']);
+                            console.dir(item['description']);
+                            console.dir(item['price']);
+                            console.dir(item['product_img']);
+
+                            BillBoard.UpdatedProduct.draw(
+                                productID,
+                                item['product_name'],
+                                item['description'],
+                                item['price'],
+                                item['product_img'],
+                                parentElem
+                            )
+                        }
+                    }
+                )
+                .catch(
+                    error => {
+                        alert("Что-то пошло не так");
+                        console.dir(error);
+                    }
+                )
+        },
+
+        // Сохранение товара после редактирования
         saveUpdateProduct: function () {
 
             let productID = this.id.split('_')[1];
@@ -388,7 +444,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(
                     result => {
                         if (result.status == true) {
-                            BillBoard.Functions.goToMyProducts()
+
+                            console.log(result);
+                            let productBlock = document.querySelector('#product_' + productID);
+                            productBlock.innerHTML = '';
+                            BillBoard.Functions.getProductByID(productID, productBlock);
+
                         } else if (result.status == false) {
                             console.dir(result.message);
                             alert(result.message);

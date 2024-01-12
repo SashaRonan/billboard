@@ -29,7 +29,7 @@
     text-align: right;
     z-index: -1;
     transition: 750ms;
-    background-color: rgba(29,79,91, 0.43);
+    background-color: rgba(29, 79, 91, 0.43);
     border-radius: 10px;
     backdrop-filter: blur(3px);
     border: 2px solid rgba(255, 255, 255, 0.5);
@@ -41,7 +41,7 @@
     padding: 12px 24px;
     color: #000;
     text-align: right;
- border-radius: 10px;
+    border-radius: 10px;
     font-size: 19px;
     margin-top: 10px;
     font-family: 'Inter', sans-serif;
@@ -52,6 +52,7 @@
     cursor: pointer;
 
 }
+
 .burger_a:first-child {
     margin-top: 30px;
 }

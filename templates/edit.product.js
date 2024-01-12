@@ -1,5 +1,6 @@
 (function (app) {
-    app.EditProduct = {
+    app.EditProduct = {  // Создание HTML формы для редактирования товара
+
         draw: function (
             productID,
             productName,

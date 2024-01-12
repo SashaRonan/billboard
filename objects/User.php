@@ -10,11 +10,12 @@ use config\Database;
 
 class User extends Database
 {
-    // конструктор для соединения с базой данных
-    public function __construct()
+
+    public function __construct()  // конструктор для соединения с базой данных
     {
         Database::connect();
     }
+
 
     public function userLogin($userEmail, $userPassword) //Авторизация пользователя
     {
@@ -49,13 +50,19 @@ class User extends Database
         echo json_encode(["status" => true, "message" => "Успешная авторизация"]);
     }
 
-    public function LogOut()
+
+    public function LogOut()  //функция для выхода из системы
     {
         session_destroy();
     }
 
-    //Регистрация пользователя
-    public function createUser($name, $email, $phone, $password)
+
+    //Регистрация нового пользователя
+    public function createUser(
+        $name,
+        $email,
+        $phone,
+        $password)
     {
         if (!empty($name) && !empty($email) && !empty($phone) && !empty($password)) {
             $stmt = mysqli_prepare(Database::connect(), "INSERT INTO `users` (`name`, `email`, `phone`, `password`) VALUES (?, ?, ?, ?)");

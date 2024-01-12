@@ -1,5 +1,5 @@
 (function (app) {
-    app.Create = {
+    app.Create = { // Функции для создания элементов HTML страницы
 
         div: function (divClass) {
             let div = document.createElement('div');

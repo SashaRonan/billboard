@@ -1,4 +1,7 @@
 <?php
+
+// Добавление нового товара
+
 session_start();
 
 require_once('../objects/Product.php');

@@ -27,11 +27,4 @@ class Database
     {
         return mysqli_fetch_assoc($query);
     }
-
-    // фФункция для получения количества строк запроса (для последующего использования в создании ассоциативного массива)
-    public static function getNumRows($query)
-    {
-        return mysqli_num_rows($query);
-    }
-
 }

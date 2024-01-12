@@ -1,5 +1,6 @@
 (function (app) {
-    app.ProductList = {
+    app.ProductList = { // Создание HTML страницы с полным списком товаров (основная страница, после авторизации)
+
         draw: function (
             productID,
             userName,

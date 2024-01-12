@@ -1,7 +1,8 @@
 
 
 (function (app) {
-    app.PageRegister = {
+    app.PageRegister = { // Создание HTML страницы регистрации пользователя
+
         draw: function () {
 
             let content                    = BillBoard.Create.divWithID('content_reg goLogin', 'content_log_reg');

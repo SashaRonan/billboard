@@ -1,14 +1,13 @@
 (function (app) {
-    app.MyAds = { // Создание HTML страницы с товарами авторизованного пользователя
+    app.UpdatedProduct = { // Создание HTML карточки для добавления отредактированного товара
 
         draw: function (
             productID,
             productName,
             productDescription,
             productPrice,
-            productImgSrc) {
-
-            let content                     = BillBoard.Create.divWithID("content_product_add", "product_" + productID)
+            productImgSrc,
+            parentElem) {
 
             let productBlock                = BillBoard.Create.div('product_block_add');
 
@@ -51,9 +50,9 @@
             productBlock.append(productImgBox);
             productBlock.append(productRightDiv);
 
-            content.append(productBlock);
+            parentElem.append(productBlock);
 
-            document.body.append(content);
         }
     }
+
 })(BillBoard);

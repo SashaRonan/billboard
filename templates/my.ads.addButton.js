@@ -1,5 +1,6 @@
 (function (app) {
-    app.MyAdsAddButton = {
+    app.MyAdsAddButton = { // Создание HTML кнопки для добавления товара
+
         draw: function () {
 
             let content       = BillBoard.Create.div("content_add_button")
