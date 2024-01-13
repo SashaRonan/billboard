@@ -163,6 +163,51 @@
             return svg;
         },
 
+        addButton: function (clickFunction) {
+
+            let button = document.createElement('button');
+            button.className = 'product_button_add';
+
+            let signDiv = document.createElement('div');
+            signDiv.className = 'product_button_plus';
+
+            let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('width', '800px');
+            svg.setAttribute('height', '800px');
+            svg.setAttribute('viewBox', '0 0 48 48');
+            svg.setAttribute('fill', 'none');
+
+            let rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            rect.setAttribute('width', '48');
+            rect.setAttribute('height', '48');
+            rect.setAttribute('fill', 'white');
+            rect.setAttribute('fill-opacity', '0.01');
+
+            let path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', 'M30 4H18V18H4V30H18V44H30V30H44V18H30V4Z');
+            path.setAttribute('fill', '#284459');
+            path.setAttribute('stroke', '#FFFFFF');
+            path.setAttribute('stroke-width', '4');
+            path.setAttribute('stroke-linejoin', 'round');
+
+            svg.appendChild(rect);
+            svg.appendChild(path);
+
+            signDiv.appendChild(svg);
+
+            let textDiv = document.createElement('div');
+            textDiv.className = 'product_button_text';
+            textDiv.textContent = 'Добавить';
+
+            button.addEventListener("click", clickFunction);
+
+            button.appendChild(signDiv);
+            button.appendChild(textDiv);
+
+            return button
+
+        },
+
         img: function (imgClass, id, src) {
             let img = document.createElement('img');
             img.setAttribute('id', id);

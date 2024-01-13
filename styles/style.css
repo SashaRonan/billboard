@@ -91,7 +91,7 @@ body {
     white-space: nowrap;
     margin-left: 20px;
     width: 150px;
-    height: 35px;
+    height: 32px;
     border-radius: 10px;
     backdrop-filter: blur(3px);
     border: none;
@@ -373,6 +373,18 @@ body {
     cursor: pointer;
 }
 
+.product_button:hover {
+    border: 1px solid #4c5b72;
+    background: #4c5b72;
+}
+
+.product_button:active {
+    background-color: #976e76;
+    border: 1px solid #976e76;
+    transform: translateY(2px);
+}
+
+
 .product_button_my_ads {
     font-family: "Inter", sans-serif;
     color: white;
@@ -386,16 +398,19 @@ body {
     margin-left: 20px;
 }
 
-.product_button:hover {
+
+.product_button_my_ads:hover {
     border: 1px solid #4c5b72;
     background: #4c5b72;
 }
 
-.product_button:active {
+.product_button_my_ads:active {
     background-color: #976e76;
     border: 1px solid #976e76;
     transform: translateY(2px);
 }
+
+
 
 .user_phone_class {
     display: none;
