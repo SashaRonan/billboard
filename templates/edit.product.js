@@ -9,10 +9,10 @@
             productImgSrc
         ) {
 
-            let productBlock                   = BillBoard.Create.div('product_block_add');
+            let productBlock                   = app.Create.div('product_block_add');
 
-            let productImgBox                  = BillBoard.Create.div('product_img-box');
-            let productImgDiv                  = BillBoard.Create.div('product_img');
+            let productImgBox                  = app.Create.div('product_img-box');
+            let productImgDiv                  = app.Create.div('product_img');
             let productImg                   = BillBoard.Create.img('upload_img_file', 'img_' + productID, productImgSrc);
 
             let inputFileLabel               = BillBoard.Create.label('change_img', 'change_img_' + productID, 'product_change_' + productID, 'Загрузить');

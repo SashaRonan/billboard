@@ -3,22 +3,22 @@
 
         draw: function () {
 
-            let header                            = BillBoard.Create.div('header')
-            let containerHeader                   = BillBoard.Create.div('container_productList-header')
+            let header                            = app.Create.div('header')
+            let containerHeader                   = app.Create.div('container_productList-header')
 
-            let headerLogo                        = BillBoard.Create.div('header_logo');
-            headerLogo.onclick                    = BillBoard.Functions.goToProductList;
+            let headerLogo                        = app.Create.div('header_logo');
+            headerLogo.onclick                    = app.Functions.goToProductList;
 
-            let logo                              = BillBoard.Create.img('header_logo_img', 'header_logo_img', 'img/logo/logo.svg')
-            let link                              = BillBoard.Create.paragraph('header_link', 'header_link','Billboard')
+            let logo                              = app.Create.img('header_logo_img', 'header_logo_img', 'img/logo/logo.svg')
+            let link                              = app.Create.paragraph('header_link', 'header_link','Billboard')
 
-            let headerNav                         = BillBoard.Create.divWithID('header_nav', 'header_nav')
+            let headerNav                         = app.Create.divWithID('header_nav', 'header_nav')
 
-            let headerNavList                     = BillBoard.Create.button('header_a',"Лента", BillBoard.Functions.goToProductList);
-            let headerNavMyAds                    = BillBoard.Create.button('header_a',"Мои объявления", BillBoard.Functions.goToMyProducts );
-            let headerNavExit                     = BillBoard.Create.button('header_a', "Выход", BillBoard.Functions.LogOut );
+            let headerNavList                     = app.Create.button('header_a',"Лента", app.Functions.goToProductList);
+            let headerNavMyAds                    = app.Create.button('header_a',"Мои объявления", app.Functions.goToMyProducts );
+            let headerNavExit                     = app.Create.button('header_a', "Выход", app.Functions.LogOut );
 
-            let burger                            = BillBoard.Burger.draw();
+            let burger                            = app.Burger.draw();
 
             headerLogo.append(logo);
             headerLogo.append(link)

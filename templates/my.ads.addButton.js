@@ -3,10 +3,10 @@
 
         draw: function () {
 
-            let content       = BillBoard.Create.div("content_add_button");
-            let buttonAddBox  = BillBoard.Create.div('button_add-box');
+            let content       = app.Create.div("content_add_button");
+            let buttonAddBox  = app.Create.div('button_add-box');
 
-            let buttonAdd = BillBoard.Create.addButton(BillBoard.Functions.goToAddNewProduct);
+            let buttonAdd = app.Create.addButton(app.Functions.goToAddNewProduct);
 
             buttonAddBox.append(buttonAdd);
             content.append(buttonAddBox);
