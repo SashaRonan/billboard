@@ -61,7 +61,7 @@
 
             let buttonBox                  = app.Create.div ('button_box');
             let button1                 = app.Create.button('button', 'Зарегистрироваться', app.Functions.registerUser);
-            let button2                 = BillBoard.Create.button('button', 'Войти', BillBoard.Functions.goToLogin);
+            let button2                 = app.Create.button('button', 'Войти', app.Functions.goToLogin);
 
             buttonBox.append(button1);
             buttonBox.append(button2);

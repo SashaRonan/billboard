@@ -3,7 +3,7 @@
 namespace config;
 class Database
 {
-    private static $connection;
+    private static  $connection;
 
     // Функция для соединения с БД:
     public static function connect()

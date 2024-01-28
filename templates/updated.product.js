@@ -9,39 +9,39 @@
             productImgSrc,
             parentElem) {
 
-            let productBlock                = BillBoard.Create.div('product_block_add');
+            let productBlock                = app.Create.div('product_block_add');
 
-            let productImgBox               = BillBoard.Create.div('product_img-box');
-            let productImgDiv               = BillBoard.Create.div('product_img');
-            let productImg                = BillBoard.Create.img('upload_img_file', "img_" + productID, productImgSrc);
+            let productImgBox               = app.Create.div('product_img-box');
+            let productImgDiv               = app.Create.div('product_img');
+            let productImg                = app.Create.img('upload_img_file', "img_" + productID, productImgSrc);
 
             productImgDiv.append(productImg);
             productImgBox.append(productImgDiv);
 
-            let productRightDiv              = BillBoard.Create.div('product_right_block');
+            let productRightDiv              = app.Create.div('product_right_block');
 
-            let productTopDiv                = BillBoard.Create.div('product_top_block');
+            let productTopDiv                = app.Create.div('product_top_block');
 
-            let productDescriptionBox        = BillBoard.Create.div('product_description-box_add')
-            let productNameDescriptionBox    = BillBoard.Create.div('product_name-description-box');
-            let productNameBlock         = BillBoard.Create.header('product_name', "productName_" + productID, productName);
-            let productDescriptionBlock = BillBoard.Create.paragraph('product_description', "description_" + productID, productDescription)
+            let productDescriptionBox        = app.Create.div('product_description-box_add')
+            let productNameDescriptionBox    = app.Create.div('product_name-description-box');
+            let productNameBlock         = app.Create.header('product_name', "productName_" + productID, productName);
+            let productDescriptionBlock = app.Create.paragraph('product_description', "description_" + productID, productDescription)
 
             productNameDescriptionBox.append(productNameBlock);
             productNameDescriptionBox.append(productDescriptionBlock);
             productDescriptionBox.append(productNameDescriptionBox);
 
-            let productPriceBlock             = BillBoard.Create.divWithID('product_price', "price_" + productID);
+            let productPriceBlock             = app.Create.divWithID('product_price', "price_" + productID);
             productPriceBlock.textContent = productPrice + ' р.';
 
             productTopDiv.append(productDescriptionBox);
             productTopDiv.append(productPriceBlock);
             productRightDiv.append(productTopDiv);
 
-            let productBottomDiv              = BillBoard.Create.div('product_bottom_block');
+            let productBottomDiv              = app.Create.div('product_bottom_block');
 
-            let button_edit                = BillBoard.Create.buttonWithID('product_button_my_ads',"edit_" + productID, 'Изменить', BillBoard.Functions.goToFormUpdateProduct);
-            let button_delete              = BillBoard.Create.buttonWithID('product_button_my_ads',"del_" + productID, 'Удалить', BillBoard.Functions.deleteProduct);
+            let button_edit                = app.Create.buttonWithID('product_button_my_ads',"edit_" + productID, 'Изменить', app.Functions.goToFormUpdateProduct);
+            let button_delete              = app.Create.buttonWithID('product_button_my_ads',"del_" + productID, 'Удалить', app.Functions.deleteProduct);
 
             productBottomDiv.append(button_edit);
             productBottomDiv.append(button_delete);

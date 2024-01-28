@@ -2,19 +2,19 @@
     app.Burger = {
         draw: function () { // Создание кнопки бургера в хедере для адаптивного дизайна
 
-            let burgerDiv           = BillBoard.Create.div("burger");
-            let input             = BillBoard.Create.input("burger__toggle", 'burger__toggle', 'checkbox', '');
-            let label             = BillBoard.Create.label("burger__block", "burger__block", "burger__toggle");
-            let span              = BillBoard.Create.span("burger__span", "burger__span");
-            let menuIcon            = BillBoard.Create.menuIcon();
+            let burgerDiv           = app.Create.div("burger");
+            let input             = app.Create.input("burger__toggle", 'burger__toggle', 'checkbox', '');
+            let label             = app.Create.label("burger__block", "burger__block", "burger__toggle");
+            let span              = app.Create.span("burger__span", "burger__span");
+            let menuIcon            = app.Create.menuIcon();
 
             span.appendChild(menuIcon);
             label.appendChild(span);
 
-            let headerNavDiv         = BillBoard.Create.div("burger_nav");
-            let button1           = BillBoard.Create.button("burger_a","Лента", BillBoard.Functions.goToProductList);
-            let button2           = BillBoard.Create.button("burger_a", "Мои объявления", BillBoard.Functions.goToMyProducts);
-            let button3           = BillBoard.Create.button("burger_a","Выход", BillBoard.Functions.LogOut )
+            let headerNavDiv         = app.Create.div("burger_nav");
+            let button1           = app.Create.button("burger_a","Лента", app.Functions.goToProductList);
+            let button2           = app.Create.button("burger_a", "Мои объявления", app.Functions.goToMyProducts);
+            let button3           = app.Create.button("burger_a","Выход", app.Functions.LogOut )
 
             headerNavDiv.appendChild(button1);
             headerNavDiv.appendChild(button2);

@@ -41,7 +41,7 @@ class User extends Database
         }
 
         if (md5($userPassword) !== $userDB['password']) {
-            echo json_encode(["status" => false, "message" => "Неверный пароль."]);
+            echo json_encode(["status" => false, "message" => "Неверный пароль или email."]);
             return;
         }
 
@@ -54,6 +54,7 @@ class User extends Database
     public function LogOut()  //функция для выхода из системы
     {
         session_destroy();
+        echo json_encode(["message" => "Вы вышли из системы."]);
     }
 
 

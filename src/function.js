@@ -67,10 +67,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             let phoneDisplay = phone.style.display;
 
-            if (phoneDisplay == 'none') {
+            if (phoneDisplay === 'none') {
                 button.style.display = 'none';
                 phone.style.display = 'inline-flex'
-            } else if (phoneDisplay == '') {
+            } else if (phoneDisplay === '') {
                 button.style.display = 'none';
                 phone.style.display = 'inline-flex'
             } else {
@@ -80,7 +80,8 @@ document.addEventListener("DOMContentLoaded", function () {
         },
 
         // Регистрация пользователя
-        registerUser: function () {
+        registerUser: async function () {
+
             let userEmail = document.querySelector('#email').value;
             let userPhone = document.querySelector('#phone').value;
             let userName = document.querySelector('#name').value;
@@ -94,50 +95,73 @@ document.addEventListener("DOMContentLoaded", function () {
                 password: userPassword
             };
 
+            let settings = {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(params)
+            }
+
             if (userPassword !== userConfirmPassword) {
                 alert('Пароли не совпадают');
                 return;
             }
 
-            fetch('user/userRegistration.php', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(params)
-            })
-                .then(
-                    response => {
-                        if (!response.ok) {
-                            return response.text().then(text => {
-                                throw new Error(text)
-                            });
-                            console.log(response.text());
-                        }
-                        return response.json();
-                    })
+            try {
+                let response = await fetch('user/userRegistration.php', settings);
+                let result = await response.json();
 
+                if (result.status === true) {
+                    alert(result.message);
+                    console.dir(result.message);
+                    app.Functions.goToLogin();
+                } else if (result.status === false) {
+                    console.dir(result.message);
+                }
 
-                .then(
-                    result => {
+            } catch (error) {
+                alert("Что-то пошло не так");
+                console.dir(error)
+            }
 
-                        if (result.status === true) {
-                            alert(result.message);
-                            console.dir(result.message);
-                            BillBoard.Functions.goToLogin();
-                        } else {
-                            console.dir(result.message);
-                            alert(result.message);
-                        }
-                    }
-                )
-                .catch(
-                    error => {
-                        console.error(error);
-                    }
-                );
+            // fetch('user/userRegistration.php', {
+            //     method: 'POST',
+            //     headers: {'Content-Type': 'application/json'},
+            //     body: JSON.stringify(params)
+            // })
+            //     .then(
+            //         response => {
+            //             if (!response.ok) {
+            //                 return response.text().then(text => {
+            //                     throw new Error(text)
+            //                 });
+            //                 // console.log(response.text());
+            //             }
+            //             return response.json();
+            //         })
+            //
+            //
+            //     .then(
+            //         result => {
+            //
+            //             if (result.status === true) {
+            //                 alert(result.message);
+            //                 console.dir(result.message);
+            //                 app.Functions.goToLogin();
+            //             } else {
+            //                 console.dir(result.message);
+            //                 alert(result.message);
+            //             }
+            //         }
+            //     )
+            //     .catch(
+            //         error => {
+            //             console.error(error);
+            //         }
+            //     );
         },
 
         // Вход в систему
-        loginUser: function () {
+        loginUser: async function () {
             let userEmail = document.querySelector("#userEmail").value;
             let userPassword = document.querySelector('#password_1').value;
 
@@ -146,141 +170,231 @@ document.addEventListener("DOMContentLoaded", function () {
                 password: userPassword
             };
 
-            fetch('user/userLogin.php', {
+            let settings = {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(params)
-            })
-                .then(
-                    response => response.json()
-                )
-                .then(
-                    result => {
-                        if (result.status) {
-                            BillBoard.Functions.goToProductList();
-                        } else {
-                            alert(result.message);
-                        }
-                    }
-                )
-                .catch(
-                    error => {
-                        alert("Произошла ошибка авторизации");
-                        console.log(error);
-                    }
-                );
+            }
+
+            try {
+                let response = await fetch('user/userLogin.php', settings);
+                let result = await response.json();
+
+                if (result.status) {
+                    app.Functions.goToProductList();
+                } else {
+                    alert(result.message);
+                }
+            } catch (error) {
+                alert("Произошла ошибка авторизации");
+                console.dir(error)
+            }
+
+            // fetch('user/userLogin.php', {
+            //     method: 'POST',
+            //     headers: {'Content-Type': 'application/json'},
+            //     body: JSON.stringify(params)
+            // })
+            //     .then(
+            //         response => response.json()
+            //     )
+            //     .then(
+            //         result => {
+            //             if (result.status) {
+            //                 app.Functions.goToProductList();
+            //             } else {
+            //                 alert(result.message);
+            //             }
+            //         }
+            //     )
+            //     .catch(
+            //         error => {
+            //             alert("Произошла ошибка авторизации");
+            //             console.log(error);
+            //         }
+            //     );
         },
 
-        // Выхоод из системы
-        LogOut: function () {
-            document.cookie = 'PHPSESSID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        // Выход из системы
+        LogOut: async function () {
 
-            fetch('user/userLogOut.php', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-            })
-                .then(
-                    response => response.text()
-                )
-                .then(
-                    result => {
+            try {
+                document.cookie = 'PHPSESSID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 
-                        document.body.innerHTML = '';
-                        BillBoard.HeaderLoginReg.draw();
-                        BillBoard.PageLogin.draw();
-                    }
-                )
-                .catch(error => {
-                    console.error('Произошла ошибка:', error);
-                });
+                let settings = {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                }
+
+                let response = await fetch('user/userLogOut.php', settings);
+                let result = await response.json();
+                alert(result.message);
+                document.body.innerHTML = '';
+                app.HeaderLoginReg.draw();
+                app.PageLogin.draw();
+
+            } catch (error) {
+                alert('Произошла ошибка:');
+                console.dir(error)
+            }
+
+            // fetch('user/userLogOut.php', {
+            //     method: 'POST',
+            //     headers: {'Content-Type': 'application/json'},
+            // })
+            //     .then(
+            //         response => response.text()
+            //     )
+            //     .then(
+            //         result => {
+            //             document.body.innerHTML = '';
+            //             app.HeaderLoginReg.draw();
+            //             app.PageLogin.draw();
+            //         }
+            //     )
+            //     .catch(error => {
+            //         console.error('Произошла ошибка:', error);
+            //     });
         },
 
         // Переход на страницу с товарами авторизованного пользователя
-        goToMyProducts: function () {
+        goToMyProducts: async function () {
 
-            fetch('product/productMyList.php', {
-                // method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-            })
-                .then(
-                    response => response.json()
-                )
-                .then(
-                    result => {
-                        if (result.status === false) {
-                            alert(result.message)
-                            document.body.innerHTML = '';
-                            BillBoard.HeaderProductList.draw();
-                            BillBoard.MyAdsAddButton.draw()
-                        } else {
-                            document.body.innerHTML = '';
-                            BillBoard.HeaderProductList.draw();
-                            BillBoard.MyAdsAddButton.draw()
+            let settings = {
+                headers: {'Content-Type': 'application/json'}
+            }
 
-                            for (let i = result.length - 1; i >= 0; i--) {
-                                let item = result[i];
+            try {
+                let response = await fetch('product/productMyList.php', settings);
+                let result = await response.json();
 
-                                let productID = item['product_id'];
+                document.body.innerHTML = '';
+                app.HeaderProductList.draw();
+                app.MyAdsAddButton.draw()
 
-                                BillBoard.MyAds.draw(
-                                    productID,
-                                    item['product_name'],
-                                    item['description'],
-                                    item['price'],
-                                    item['product_img']);
-                            }
-                        }
+                if (result.status === false) {
+                    alert(result.message)
+
+                } else {
+
+                    for (let key in result) {
+                        let item = result[key];
+
+                        app.MyAds.draw(
+                            item['product_id'],
+                            item['product_name'],
+                            item['description'],
+                            item['price'],
+                            item['product_img']);
                     }
-                )
+                }
+
+            } catch (error) {
+                alert('Произошла ошибка:');
+                console.dir(error)
+            }
+
+            // fetch('product/productMyList.php', {
+            //     // method: 'POST',
+            //     headers: {'Content-Type': 'application/json'},
+            // })
+            //     .then(
+            //         response => response.json()
+            //     )
+            //     .then(
+            //         result => {
+            //             if (result.status === false) {
+            //                 alert(result.message)
+            //                 document.body.innerHTML = '';
+            //                 app.HeaderProductList.draw();
+            //                 app.MyAdsAddButton.draw()
+            //             } else {
+            //                 document.body.innerHTML = '';
+            //                 app.HeaderProductList.draw();
+            //                 app.MyAdsAddButton.draw()
+            //
+            //                 for (let i = result.length - 1; i >= 0; i--) {
+            //                     let item = result[i];
+            //
+            //                     let productID = item['product_id'];
+            //
+            //                     app.MyAds.draw(
+            //                         productID,
+            //                         item['product_name'],
+            //                         item['description'],
+            //                         item['price'],
+            //                         item['product_img']);
+            //                 }
+            //             }
+            //         }
+            //     )
         },
 
         // Переход на основную страницу после авторизации (Страница со всеми товарами)
-        goToProductList: function () {
-            {
-                fetch('product/productList.php')
-                    .then(
-                        response => response.json()
-                    )
-                    .then(
-                        result => {
-                            document.body.innerHTML = '';
-                            BillBoard.HeaderProductList.draw();
-                            for (let i = result.length - 1; i >= 0; i--) {
-                                let item = result[i];
+        goToProductList: async function () {
+            try {
+                let response = await fetch('product/productList.php');
+                let result = await response.json();
 
-                                let productID = item['product_id'];
-                                // let buttonID = "button_id_" + productID;
+                document.body.innerHTML = '';
+                app.HeaderProductList.draw();
 
-                                BillBoard.ProductList.draw(
-                                    productID,
-                                    // buttonID,
-                                    item['name'],
-                                    item['phone'],
-                                    item['product_name'],
-                                    item['description'],
-                                    item['price'],
-                                    item['product_img']);
-                            }
-                        }
-                    )
-                    .catch(
-                        error => {
-                            alert("Что-то пошло не так");
-                            console.dir(error);
-                        }
-                    )
+                for (let key in result) {
+                    let item = result[key];
+
+                    app.ProductList.draw(
+                        item.product_id,
+                        item.name,
+                        item.phone,
+                        item.product_name,
+                        item.description,
+                        item.price,
+                        item.product_img)
+                }
+            } catch (error) {
+                alert("Что-то пошло не так");
+                console.dir(error);
+
             }
+            // fetch('product/productList.php')
+            //     .then(
+            //         response => response.json()
+            //     )
+            //     .then(
+            //         result => {
+            //             document.body.innerHTML = '';
+            //             app.HeaderProductList.draw();
+            //             for (let i = result.length - 1; i >= 0; i--) {
+            //                 let item = result[i];
+            //
+            //                 app.ProductList.draw(
+            //                     item['product_id'],
+            //                     item['name'],
+            //                     item['phone'],
+            //                     item['product_name'],
+            //                     item['description'],
+            //                     item['price'],
+            //                     item['product_img']);
+            //             }
+            //         }
+            //     )
+            //     .catch(
+            //         error => {
+            //             alert("Что-то пошло не так");
+            //             console.dir(error);
+            //         }
+            //     )
         },
 
         // Переход на страницу добавления товара
         goToAddNewProduct: function () {
             document.body.innerHTML = '';
-            BillBoard.HeaderProductList.draw();
-            BillBoard.PageAddAds.draw();
+            app.HeaderProductList.draw();
+            app.PageAddAds.draw();
         },
 
         // Добавление нового товара
-        addMyProduct: function () {
+        addMyProduct: async function () {
             let data = new FormData();
 
             let fileInput = document.querySelector('#file_upload');
@@ -292,43 +406,80 @@ document.addEventListener("DOMContentLoaded", function () {
                 data.append("product_price", document.querySelector('#product_price').value);
             }
 
-            fetch('product/addMyProduct.php', {
+            let settings = {
                 method: 'POST',
                 body: data
-            })
-                .then(
-                    response => response.json()
-                )
-                .then(
-                    result => {
-                        if (result.status == true) {
-                            BillBoard.Functions.goToMyProducts()
-                        } else if (result.status == false) {
-                            console.dir(result.message);
-                            alert(result.message);
-                        }
-                    }
-                )
+            }
+
+            try {
+                let response = await fetch('product/addMyProduct.php', settings);
+                let result = await response.json();
+
+                if (result.status === true) {
+                    app.Functions.goToMyProducts()
+                } else if (result.status === false) {
+                    console.dir(result.message);
+                    alert(result.message);
+                }
+            } catch (error) {
+                alert("Что-то пошло не так");
+                console.dir(error);
+            }
+
+            // fetch('product/addMyProduct.php', {
+            //     method: 'POST',
+            //     body: data
+            // })
+            //     .then(
+            //         response => response.json()
+            //     )
+            //     .then(
+            //         result => {
+            //             if (result.status === true) {
+            //                 app.Functions.goToMyProducts()
+            //             } else if (result.status === false) {
+            //                 console.dir(result.message);
+            //                 alert(result.message);
+            //             }
+            //         }
+            //     )
         },
 
         // Удаление товара
-        deleteProduct: function () {
+        deleteProduct: async function () {
             let productID = this.id.split('_')[1];
-            fetch('product/deleteProduct.php?productID=' + productID, {})
-                .then(
-                    response => response.json()
-                )
-                .then(
-                    result => {
-                        if (result.status === true) {
-                            document.body.innerHTML = '';
-                            BillBoard.Functions.goToMyProducts()
-                        } else if (result.status === false) {
-                            console.dir(result.message);
-                            alert(result.message);
-                        }
-                    }
-                )
+
+            try {
+                let response = await fetch('product/deleteProduct.php?productID=' + productID, {});
+                let result = await response.json();
+
+                if (result.status === true) {
+                    document.body.innerHTML = '';
+                    app.Functions.goToMyProducts()
+                } else if (result.status === false) {
+                    console.dir(result.message);
+                    alert(result.message);
+                }
+            } catch (error) {
+                alert("Что-то пошло не так");
+                console.dir(error);
+            }
+
+            // fetch('product/deleteProduct.php?productID=' + productID, {})
+            //     .then(
+            //         response => response.json()
+            //     )
+            //     .then(
+            //         result => {
+            //             if (result.status === true) {
+            //                 document.body.innerHTML = '';
+            //                 app.Functions.goToMyProducts()
+            //             } else if (result.status === false) {
+            //                 console.dir(result.message);
+            //                 alert(result.message);
+            //             }
+            //         }
+            //     )
         },
 
         // Переход на форму редактирования товара
@@ -339,8 +490,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let productNameID = 'productName_' + productID;
             let productDescriptionID = 'description_' + productID;
             let productPriceID = 'price_' + productID;
-            // let saveButtonID = 'save_' + productID;
-            // let deleteButtonID = "del_" + productID;
+
             let productImgID = "img_" + productID;
 
 
@@ -353,7 +503,7 @@ document.addEventListener("DOMContentLoaded", function () {
             getProduct.innerHTML = '';
 
             getProduct.appendChild(
-                BillBoard.EditProduct.draw(
+                app.EditProduct.draw(
                     productID,
                     productName,
                     productDescription,
@@ -365,47 +515,65 @@ document.addEventListener("DOMContentLoaded", function () {
         },
 
         // Получение данных товара (для сохранения после редактирования)
-        getProductByID: function (productID, parentElem) {
+        getProductByID: async function (productID, parentElem) {
 
-            fetch('product/getProductByID.php?productID=' + productID)
-                .then(
-                    response => response.json(),
-                )
-                .then(
-                    result => {
-                        console.log(result);
+            try {
+                let response = await fetch('product/getProductByID.php?productID=' + productID);
+                let result = await response.json();
 
-                        for (let i = result.length - 1; i >= 0; i--) {
-                            let item = result[i];
+                for (let key in result) {
+                    let item = result[key];
 
-                            let productID = item['product_id'];
-                            console.dir(productID);
-                            console.dir(item['product_name']);
-                            console.dir(item['description']);
-                            console.dir(item['price']);
-                            console.dir(item['product_img']);
+                    app.UpdatedProduct.draw(
+                        item['product_id'],
+                        item['product_name'],
+                        item['description'],
+                        item['price'],
+                        item['product_img'],
+                        parentElem
+                    )
+                }
 
-                            BillBoard.UpdatedProduct.draw(
-                                productID,
-                                item['product_name'],
-                                item['description'],
-                                item['price'],
-                                item['product_img'],
-                                parentElem
-                            )
-                        }
-                    }
-                )
-                .catch(
-                    error => {
-                        alert("Что-то пошло не так");
-                        console.dir(error);
-                    }
-                )
+            } catch (error) {
+                alert("Что-то пошло не так");
+                console.dir(error);
+            }
+
+
+            // fetch('product/getProductByID.php?productID=' + productID)
+            //     .then(
+            //         response => response.json(),
+            //     )
+            //     .then(
+            //         result => {
+            //             console.log(result);
+            //
+            //             for (let i = result.length - 1; i >= 0; i--) {
+            //                 let item = result[i];
+            //
+            //                 let productID = item['product_id'];
+            //
+            //                 app.UpdatedProduct.draw(
+            //                     productID,
+            //                     item['product_name'],
+            //                     item['description'],
+            //                     item['price'],
+            //                     item['product_img'],
+            //                     parentElem
+            //                 )
+            //             }
+            //         }
+            //     )
+            //     .catch(
+            //         error => {
+            //             alert("Что-то пошло не так");
+            //             console.dir(error);
+            //         }
+            //     )
         },
 
         // Сохранение товара после редактирования
-        saveUpdateProduct: function () {
+        saveUpdateProduct: async function () {
 
             let productID = this.id.split('_')[1];
             let productNameID = '#productName_' + productID;
@@ -434,28 +602,56 @@ document.addEventListener("DOMContentLoaded", function () {
             data.append("product_description", document.querySelector(productDescriptionID).value);
             data.append("product_price", document.querySelector(productPriceID).value);
 
-            fetch('product/updateProduct.php', {
+
+            let settings = {
                 method: 'POST',
                 body: data
-            })
-                .then(
-                    response => response.json()
-                )
-                .then(
-                    result => {
-                        if (result.status == true) {
+            }
 
-                            console.log(result);
-                            let productBlock = document.querySelector('#product_' + productID);
-                            productBlock.innerHTML = '';
-                            BillBoard.Functions.getProductByID(productID, productBlock);
+            try {
 
-                        } else if (result.status == false) {
-                            console.dir(result.message);
-                            alert(result.message);
-                        }
-                    }
-                )
+                let response = await fetch('product/updateProduct.php', settings);
+                let result = await response.json();
+
+                if (result.status === true) {
+
+                    console.log(result);
+                    let productBlock = document.querySelector('#product_' + productID);
+                    productBlock.innerHTML = '';
+                    app.Functions.getProductByID(productID, productBlock);
+
+                } else if (result.status === false) {
+                    console.dir(result.message);
+                    alert(result.message);
+                }
+
+            } catch (error) {
+                alert("Что-то пошло не так");
+                console.dir(error);
+            }
+
+            // fetch('product/updateProduct.php', {
+            //     method: 'POST',
+            //     body: data
+            // })
+            //     .then(
+            //         response => response.json()
+            //     )
+            //     .then(
+            //         result => {
+            //             if (result.status === true) {
+            //
+            //                 console.log(result);
+            //                 let productBlock = document.querySelector('#product_' + productID);
+            //                 productBlock.innerHTML = '';
+            //                 app.Functions.getProductByID(productID, productBlock);
+            //
+            //             } else if (result.status === false) {
+            //                 console.dir(result.message);
+            //                 alert(result.message);
+            //             }
+            //         }
+            //     )
         },
 
     }
