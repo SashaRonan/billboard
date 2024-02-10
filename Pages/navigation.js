@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", function () {
     BillBoard.PageLogin.draw();
 });
 
+
+
 (function (app) {
     app.Navigate = {
 
@@ -74,6 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 app.HeaderProductList.draw();
 
                 for (let key in result) {
+
                     let item = result[key];
 
                     app.ProductList.draw(

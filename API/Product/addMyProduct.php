@@ -2,11 +2,13 @@
 
 // Добавление нового товара
 
+use objects\Product;
+
 session_start();
 
 require_once('../../Model/Objects/Product.php');
 
-$product = new \objects\Product();
+$product = new Product();
 
 $userId = $_SESSION['user_id'];
 

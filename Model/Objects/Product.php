@@ -7,12 +7,10 @@ use config\Database;
 
 class Product extends Database
 {
-
     public function __construct()  // конструктор для соединения с базой данных
     {
         Database::connect();
     }
-
 
     public function getProductsList()  //Получаем полный список товаров с БД
     {
@@ -22,7 +20,6 @@ class Product extends Database
         }
         echo json_encode($productsList);
     }
-
 
     //функция для получения всех товаров конкретного пользователя с БД
     public function getAllProductsOfUser()
@@ -47,7 +44,6 @@ class Product extends Database
         }
     }
 
-
     //функция для сохранения нового товара в БД
     public function createProduct(
         $productName,
@@ -68,10 +64,7 @@ class Product extends Database
             mysqli_stmt_execute($stmt);
             echo json_encode(["status" => true, "message" => "Успешная регистрация продукта"]);
         }
-
-
     }
-
 
     //функция для обновления любого параметра товара в БД
     public function updateProduct(
@@ -96,7 +89,6 @@ class Product extends Database
         echo json_encode(["status" => true, "message" => "успех"]);
     }
 
-
     //функция для удаления товара по его ID
     public function deleteProduct($productID)
     {
@@ -111,11 +103,9 @@ class Product extends Database
         }
     }
 
-
     //функция для получения одного товара по ID
     public function getProductByID($productID)
     {
-
         $stmt = mysqli_prepare(Database::connect(), "SELECT `product_id`, `product_name`,`description`,`price`,`product_img` FROM `products` WHERE `product_id` = ? ");
         mysqli_stmt_bind_param($stmt, "i", $productID);
         mysqli_stmt_execute($stmt);

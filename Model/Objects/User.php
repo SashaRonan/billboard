@@ -1,10 +1,8 @@
 <?php
 
-
 namespace objects;
 
 require_once('..\..\Library\Config\Database.php');
-
 
 use config\Database;
 
@@ -15,7 +13,6 @@ class User extends Database
     {
         Database::connect();
     }
-
 
     public function userLogin($userEmail, $userPassword) //Авторизация пользователя
     {
@@ -50,13 +47,11 @@ class User extends Database
         echo json_encode(["status" => true, "message" => "Успешная авторизация"]);
     }
 
-
     public function LogOut()  //функция для выхода из системы
     {
         session_destroy();
         echo json_encode(["message" => "Вы вышли из системы."]);
     }
-
 
     //Регистрация нового пользователя
     public function createUser(
@@ -75,5 +70,4 @@ class User extends Database
             echo json_encode(["status" => false, "message" => "Заполните все поля."]);
         }
     }
-
 }

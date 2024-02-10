@@ -8,7 +8,6 @@
             productPrice,
             productImgSrc
         ) {
-
             let productBlock                   = app.Create.div('product_block_add');
 
             let productImgBox                  = app.Create.div('product_img-box');

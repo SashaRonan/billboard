@@ -1,10 +1,10 @@
 <?php
 
-// Запрос товара по ID
+use objects\Product;
 
 require_once('../../Model/Objects/Product.php');
 
-$product = new \objects\Product();
+$product = new Product();
 
 $productID = $_GET['productID'] ?? '';
 

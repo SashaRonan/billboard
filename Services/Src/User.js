@@ -80,7 +80,6 @@
         LogOut: async function () {
 
             try {
-                document.cookie = 'PHPSESSID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 
                 let settings = {
                     method: 'POST',
@@ -90,6 +89,7 @@
                 let response = await fetch('API/User/userLogOut.php', settings);
                 let result = await response.json();
                 alert(result.message);
+                document.cookie = 'PHPSESSID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
                 document.body.innerHTML = '';
                 app.HeaderLoginReg.draw();
                 app.PageLogin.draw();

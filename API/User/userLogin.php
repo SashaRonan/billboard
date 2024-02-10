@@ -15,7 +15,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $inputData = file_get_contents('php://input');
     $userData = json_decode($inputData, true);
 
-
     $userEmail = $userData['email'] ?? '';
     $userPassword = $userData['password'] ?? '';
 

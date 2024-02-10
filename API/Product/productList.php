@@ -1,11 +1,11 @@
 <?php
 
-// Запрос полного списка товара
+use objects\Product;
 
 session_start();
 
 require_once('../../Model/Objects/Product.php');
 
-$product = new \objects\Product();
+$product = new Product();
 
 $product->getProductsList();

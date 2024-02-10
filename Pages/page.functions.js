@@ -60,7 +60,5 @@
                 phone.style.display = 'none';
             }
         },
-
-
     }
 })(BillBoard);

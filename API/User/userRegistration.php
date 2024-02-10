@@ -14,23 +14,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $inputData = file_get_contents('php://input');
     $userData = json_decode($inputData, true);
 
-    if (isset($userData['name'])) {
-        $name = $userData['name'];
+    $name = $userData['name'];
+    $phone = $userData['phone'];
+    $email = $userData['email'];
+    $password = $userData['password'];
+
+    if (isset($name) && isset($phone) && isset($email) && isset($password) ) {
+        $user->createUser($name, $email, $phone, $password);
     }
 
-    if (isset($userData['phone'])) {
-        $phone = $userData['phone'];
-    }
-
-    if (isset($userData['email'])) {
-        $email = $userData['email'];
-    }
-
-    if (isset($userData['password'])) {
-        $password = $userData['password'];
-    }
-
-    $user->createUser($name, $email, $phone, $password);
 }
 
 
