@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $userData['password'];
 
     if (isset($name) && isset($phone) && isset($email) && isset($password) ) {
-        $user->createUser($name, $email, $phone, $password);
+        $user->registerUser($name, $email, $phone, $password);
     }
 
 }

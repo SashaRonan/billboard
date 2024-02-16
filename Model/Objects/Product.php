@@ -1,9 +1,9 @@
 <?php
 
 namespace objects;
-require_once('..\..\Library\Config\Database.php');
+require_once('..\..\Library\Database.php');
 
-use config\Database;
+use Database;
 
 class Product extends Database
 {
@@ -25,15 +25,14 @@ class Product extends Database
     public function getAllProductsOfUser()
     {
         $userID = $_SESSION['user_id'];
+        $query = "SELECT `product_id`, `product_name`,`description`,`price`,`product_img`,`name`,`phone` FROM `products` LEFT OUTER JOIN `users` ON `select_user_id` = `user_id` WHERE `user_id` = ? ";
+        $argTypes = "i";
 
-        $stmt = mysqli_prepare(Database::connect(), "SELECT `product_id`, `product_name`,`description`,`price`,`product_img`,`name`,`phone` FROM `products` LEFT OUTER JOIN `users` ON `select_user_id` = `user_id` WHERE `user_id` = ? ");
-        mysqli_stmt_bind_param($stmt, "i", $userID);
-        mysqli_stmt_execute($stmt);
+        $stmt = Database::stmtQuery($query, $argTypes,$userID);
+        $products = Database::stmtResult($stmt);
+        $numRows = Database::stmtNumRows($stmt);
 
-        $products = mysqli_stmt_get_result($stmt);
-        $numRows = mysqli_stmt_affected_rows($stmt);
-
-        while ($productArray = mysqli_fetch_assoc($products)) {
+        while ($productArray = Database::fetch($products)) {
             $productsList [] = $productArray;
         }
 
@@ -53,15 +52,19 @@ class Product extends Database
     )
     {
         if (isset($_FILES["myProduct"]["name"])) {
-            $productImg = "Img/products/" . $_FILES["myProduct"]["name"];
-            $productImgPath = "../../Img/products/" . $_FILES["myProduct"]["name"];
+            $productImg = "img/products/" . $_FILES["myProduct"]["name"];
+            $productImgPath = "../../img/products/" . $_FILES["myProduct"]["name"];
         } else {
             $productImg = '#';
         }
         if (move_uploaded_file($_FILES["myProduct"]["tmp_name"], $productImgPath)) {
-            $stmt = mysqli_prepare(Database::connect(), "INSERT INTO `products` (`product_name`, `description`, `select_user_id`, `price`, `product_img`) VALUES (?, ?, ?, ?, ?)");
-            mysqli_stmt_bind_param($stmt, "ssiis", $productName, $description, $userId, $price, $productImg);
-            mysqli_stmt_execute($stmt);
+
+            $query = "INSERT INTO `products` (`product_name`, `description`, `select_user_id`, `price`, `product_img`) VALUES (?, ?, ?, ?, ?)";
+            $argTypes = "ssiis";
+            $args = [$productName, $description, $userId, $price, $productImg];
+
+            Database::stmtQuery($query, $argTypes, ...$args);
+
             echo json_encode(["status" => true, "message" => "Успешная регистрация продукта"]);
         }
     }
@@ -74,31 +77,34 @@ class Product extends Database
         $price)
     {
         if (isset($_FILES["myProduct"]["name"])) {
-            $productImg = "Img/products/" . $_FILES["myProduct"]["name"];
-            $productImgPath = "../../Img/products/" . $_FILES["myProduct"]["name"];
+            $productImg = "img/products/" . $_FILES["myProduct"]["name"];
+            $productImgPath = "../../img/products/" . $_FILES["myProduct"]["name"];
             move_uploaded_file($_FILES["myProduct"]["tmp_name"], $productImgPath);
         } else {
-            $productImg = "Img/products/" . $_POST["product_file"];
-            $productImgPath = "../../Img/products/" . $_POST["product_file"];
+            $productImg = "img/products/" . $_POST["product_file"];
+            $productImgPath = "../../img/products/" . $_POST["product_file"];
         }
 
-        $stmt = mysqli_prepare(Database::connect(), "UPDATE `products` SET `product_name`= ?,`description`= ?,`price`= ?,`product_img`= ? WHERE `product_id` = ?");
+        $query = "UPDATE `products` SET `product_name`= ?,`description`= ?,`price`= ?,`product_img`= ? WHERE `product_id` = ?";
+        $argTypes = "ssisi";
+        $args = [$productName, $description, $price, $productImg, $productID];
 
-        mysqli_stmt_bind_param($stmt, "ssisi", $productName, $description, $price, $productImg, $productID);
-        mysqli_stmt_execute($stmt);
+        Database::stmtQuery($query,  $argTypes, ...$args);
+
         echo json_encode(["status" => true, "message" => "успех"]);
     }
 
     //функция для удаления товара по его ID
     public function deleteProduct($productID)
     {
-        $stmt = mysqli_prepare(Database::connect(), "DELETE FROM `products` WHERE `products`.`product_id` = ?");
-        mysqli_stmt_bind_param($stmt, "i", $productID);
-        if (mysqli_stmt_execute($stmt)) {
+        $query = "DELETE FROM `products` WHERE `products`.`product_id` = ?";
+        $argTypes = "i";
 
+        $stmt = Database::stmtQuery($query, $argTypes, $productID);
+
+        if ($stmt) {
             echo json_encode(["status" => true, "message" => "Вы удалили товар"]);
         } else {
-
             echo json_encode(["status" => false, "message" => "Произошла ошибка"]);
         }
     }
@@ -106,14 +112,15 @@ class Product extends Database
     //функция для получения одного товара по ID
     public function getProductByID($productID)
     {
-        $stmt = mysqli_prepare(Database::connect(), "SELECT `product_id`, `product_name`,`description`,`price`,`product_img` FROM `products` WHERE `product_id` = ? ");
-        mysqli_stmt_bind_param($stmt, "i", $productID);
-        mysqli_stmt_execute($stmt);
 
-        $products = mysqli_stmt_get_result($stmt);
-        $numRows = mysqli_stmt_affected_rows($stmt);
+        $query = "SELECT `product_id`, `product_name`,`description`,`price`,`product_img` FROM `products` WHERE `product_id` = ? ";
+        $argTypes = "i";
 
-        while ($productArray = mysqli_fetch_assoc($products)) {
+        $stmt = Database::stmtQuery($query, $argTypes, $productID);
+        $products = Database::stmtResult($stmt);
+        $numRows = Database::stmtNumRows($stmt);
+
+        while ($productArray = Database::fetch($products)) {
             $productByID [] = $productArray;
         }
 

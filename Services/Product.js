@@ -1,7 +1,6 @@
 (function (app) {
     app.Product = {
 
-
         // Добавление нового товара
         addMyProduct: async function () {
             let data = new FormData();

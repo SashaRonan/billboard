@@ -2,9 +2,9 @@
 
 namespace objects;
 
-require_once('..\..\Library\Config\Database.php');
+require_once('..\..\Library\Database.php');
 
-use config\Database;
+use Database;
 
 class User extends Database
 {
@@ -26,11 +26,13 @@ class User extends Database
             return;
         }
 
-        $stmt = mysqli_prepare(Database::connect(), "SELECT `user_id`, `password` FROM `users` WHERE `email`= ?");
-        mysqli_stmt_bind_param($stmt, "s", $userEmail);
-        mysqli_stmt_execute($stmt);
-        $userStmtResult = mysqli_stmt_get_result($stmt);
-        $userDB = mysqli_fetch_assoc($userStmtResult);
+        $query = "SELECT `user_id`, `password` FROM `users` WHERE `email`= ?";
+        $argTypes = "s";
+        $args = $userEmail;
+
+        $stmt = Database::stmtQuery($query, $argTypes, $args);
+        $userStmtResult = Database::stmtResult($stmt);
+        $userDB = Database::fetch($userStmtResult);
 
         if ($userDB == 0) {
             echo json_encode(["status" => false, "message" => "Пользователя с таким email не существует."]);
@@ -54,17 +56,23 @@ class User extends Database
     }
 
     //Регистрация нового пользователя
-    public function createUser(
+    public function registerUser(
         $name,
         $email,
         $phone,
         $password)
     {
+
         if (!empty($name) && !empty($email) && !empty($phone) && !empty($password)) {
-            $stmt = mysqli_prepare(Database::connect(), "INSERT INTO `users` (`name`, `email`, `phone`, `password`) VALUES (?, ?, ?, ?)");
+
             $hashPassword = md5($password);
-            mysqli_stmt_bind_param($stmt, "ssis", $name, $email, $phone, $hashPassword);
-            mysqli_stmt_execute($stmt);
+
+            $query = "INSERT INTO `users` (`name`, `email`, `phone`, `password`) VALUES (?, ?, ?, ?)";
+            $argTypes = "ssis";
+            $args = [$name, $email, $phone, $hashPassword];
+
+            Database::stmtQuery($query, $argTypes, ...$args);
+
             echo json_encode(["status" => true, "message" => "Вы успешно  зарегистрировались. Войдите в систему"]);
         } else {
             echo json_encode(["status" => false, "message" => "Заполните все поля."]);

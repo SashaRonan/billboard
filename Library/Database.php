@@ -1,6 +1,5 @@
 <?php
 
-namespace config;
 class Database
 {
     private static  $connection;
@@ -16,6 +15,19 @@ class Database
         return self::$connection;
     }
 
+
+    public static function stmtQuery($query, $argTypes, ...$args)
+    {
+        $stmt = mysqli_prepare(Database::connect(), $query);
+        mysqli_stmt_bind_param($stmt, $argTypes, ...$args);
+        mysqli_stmt_execute($stmt);
+        return $stmt;
+    }
+
+    public static function stmtResult ($stmt) {
+        return mysqli_stmt_get_result($stmt);
+    }
+
     // Функция для формирования тела запроса БД
     public static function query($sqlString)
     {
@@ -27,4 +39,10 @@ class Database
     {
         return mysqli_fetch_assoc($query);
     }
+
+    public static  function stmtNumRows ($stmt)
+    {
+        return mysqli_stmt_affected_rows ($stmt);
+    }
+
 }
