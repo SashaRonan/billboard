@@ -1,8 +1,8 @@
 (function (app) {
     app.Product = {
 
-        // Добавление нового товара
-        addMyProduct: async function () {
+        // Получение данных для добавления товара
+        getDataForAddProduct: () => {
             let data = new FormData();
 
             let fileInput = document.querySelector('#file_upload');
@@ -13,6 +13,13 @@
                 data.append("product_description", document.querySelector("#product_description").value);
                 data.append("product_price", document.querySelector('#product_price').value);
             }
+            return data;
+        },
+
+        // Добавление нового товара
+        addMyProduct: async () => {
+
+            let data = app.Product.getDataForAddProduct();
 
             let settings = {
                 method: 'POST',
@@ -56,7 +63,7 @@
         getProductByID: async function (productID, parentElem) {
 
             try {
-                let  response = await fetch('API/Product/getProductByID.php?productID=' + productID);
+                let response = await fetch('API/Product/getProductByID.php?productID=' + productID);
                 let result = await response.json();
 
                 for (let key in result) {
@@ -77,10 +84,9 @@
             }
         },
 
-        // Сохранение товара после редактирования
-        saveUpdateProduct: async function () {
+        // получение данных для сохранения продукта после редактирования
+        getDataForSaveProduct: function(productID) {
 
-            let productID = this.id.split('_')[1];
             let productNameID = '#productName_' + productID;
             let productDescriptionID = '#description_' + productID;
             let productPriceID = '#price_' + productID;
@@ -107,6 +113,14 @@
             data.append("product_description", document.querySelector(productDescriptionID).value);
             data.append("product_price", document.querySelector(productPriceID).value);
 
+            return data;
+        },
+
+        // Сохранение товара после редактирования
+        saveUpdateProduct: async function () {
+
+            let productID = this.id.split('_')[1];
+            let  data = app.Product.getDataForSaveProduct(productID);
 
             let settings = {
                 method: 'POST',
@@ -133,8 +147,6 @@
             }
 
         },
-
-
 
     }
 })(BillBoard);

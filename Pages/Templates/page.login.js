@@ -18,7 +18,7 @@
             inputBlock1.append(label1);
 
             let inputBlock2                        = app.Create.div('input_password_block');
-            let viewPasswordIcon                = app.Create.link("viewHide",'showView_1', app.Functions.show_hide_password);
+            let viewPasswordIcon                = app.Create.link("viewHide",'showView_1', app.PageLogin.show_hide_password);
             let input2                            = app.Create.input('input','password_1','password', 'Введите ваш пароль') ;
             let label2                            = app.Create.label('input_label', 'password', 'password_1','Пароль', );
 
@@ -43,6 +43,22 @@
 
             document.body.append(content);
 
-        }
+        },
+        // Показать-скрыть пароль
+        show_hide_password: function () {
+            let showViewID = this.id.split('_')[1]
+            let passwordID = 'password_' + showViewID;
+            let password = document.querySelector('#' + passwordID);
+            let passwordType = password.getAttribute('type');
+            let showView = document.getElementById(this.id);
+
+            if (passwordType === 'password') {
+                showView.classList.add('view');
+                password.setAttribute('type', 'text');
+            } else {
+                showView.classList.remove('view');
+                password.setAttribute('type', 'password');
+            }
+        },
     }
 })(BillBoard);

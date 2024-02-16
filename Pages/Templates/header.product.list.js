@@ -7,7 +7,7 @@
             let containerHeader                   = app.Create.div('container_productList-header')
 
             let headerLogo                        = app.Create.div('header_logo');
-            headerLogo.onclick                    = app.Navigate.goToProductList;
+            headerLogo.onclick                                  = app.Navigate.goToProductList;
 
             let logo                              = app.Create.img('header_logo_img', 'header_logo_img', 'img/logo/logo.svg')
             let link                              = app.Create.paragraph('header_link', 'header_link','Billboard')

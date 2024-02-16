@@ -15,7 +15,7 @@
             let productImg                   = app.Create.img('upload_img_file', 'img_' + productID, productImgSrc);
 
             let inputFileLabel               = app.Create.label('change_img', 'change_img_' + productID, 'product_change_' + productID, 'Загрузить');
-            let inputFileButton              = app.Create.inputFile('upload_button_input', 'product_change_' + productID, app.Functions.loadPreviewEdit);
+            let inputFileButton              = app.Create.inputFile('upload_button_input', 'product_change_' + productID, app.EditProduct.loadPreviewEdit);
 
             inputFileLabel.append(inputFileButton);
             productImgDiv.append(productImg);
@@ -56,5 +56,16 @@
             productBlock.append(productImgBox);
             productBlock.append(productRightDiv);
             return productBlock;
-        }
+        },
+
+        // Загрузка изображения при редактировании нового товара
+        loadPreviewEdit: function () {
+            let getID = this.id.split('_')[2];
+            let output = document.querySelector('#img_' + getID);
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function () {
+                URL.revokeObjectURL(output.src)
+            }
+            return output.onload;
+        },
     }})(BillBoard);

@@ -38,7 +38,7 @@
             let inputBlock4                 = app.Create.div('input_block');
             let input4                    = app.Create.input('input','password_2','password','Введите ваш пароль');
             let label4                    = app.Create.label('input_label', 'input_password','password_2','Пароль');
-            let viewPasswordIcon         = app.Create.link("viewHide_reg",'showView_2', app.Functions.show_hide_password);
+            let viewPasswordIcon         = app.Create.link("viewHide_reg",'showView_2', app.PageRegister.show_hide_password);
 
             inputBlock4.append(input4);
             inputBlock4.append(label4);
@@ -47,7 +47,7 @@
             let inputBlock5              = app.Create.div('input_block');
             let input5                 = app.Create.input('input','password_3','password','Введите ваш пароль еще раз');
             let label5                 = app.Create.label('input_label', 'input_passwordConfirm','password_3','Подтвердите пароль');
-            let confirmPasswordIcon   = app.Create.link("viewHide_confirm",'showView_3', app.Functions.show_hide_password);
+            let confirmPasswordIcon   = app.Create.link("viewHide_confirm",'showView_3', app.PageRegister.show_hide_password);
 
             inputBlock5.append(input5);
             inputBlock5.append(label5);
@@ -73,7 +73,24 @@
 
             document.body.append(content);
 
-        }
+        },
+
+        // Показать-скрыть пароль
+        show_hide_password: function () {
+            let showViewID = this.id.split('_')[1]
+            let passwordID = 'password_' + showViewID;
+            let password = document.querySelector('#' + passwordID);
+            let passwordType = password.getAttribute('type');
+            let showView = document.getElementById(this.id);
+
+            if (passwordType === 'password') {
+                showView.classList.add('view');
+                password.setAttribute('type', 'text');
+            } else {
+                showView.classList.remove('view');
+                password.setAttribute('type', 'password');
+            }
+        },
     }
 })(BillBoard);
 

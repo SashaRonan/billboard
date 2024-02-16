@@ -14,7 +14,7 @@
             let headerNavDiv         = app.Create.div("burger_nav");
             let button1           = app.Create.button("burger_a","Лента", app.Navigate.goToProductList);
             let button2           = app.Create.button("burger_a", "Мои объявления", app.Navigate.goToMyProducts);
-            let button3           = app.Create.button("burger_a","Выход", app.Functions.LogOut )
+            let button3           = app.Create.button("burger_a","Выход", app.User.LogOut )
 
             headerNavDiv.appendChild(button1);
             headerNavDiv.appendChild(button2);

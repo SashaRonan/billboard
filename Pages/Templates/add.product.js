@@ -36,7 +36,7 @@
             uploadFileBox.append(uploadFileSaveBlock);
 
             let inputFileLabel              = app.Create.label('upload_button', 'upload_button', 'file_upload', 'Загрузить');
-            let inputFileButton             = app.Create.inputFile('upload_button_input', 'file_upload', app.Functions.loadPreviewAdd);
+            let inputFileButton             = app.Create.inputFile('upload_button_input', 'file_upload', app.PageAddAds.loadPreviewAdd);
 
             inputFileLabel.append(inputFileButton);
             uploadFileSaveBlock.append(inputFileLabel)
@@ -51,6 +51,16 @@
             content.append(addBlock);
 
             document.body.append(content);
+        },
+
+        // Загрузка превьюшки изображения при добавлении нового товара
+        loadPreviewAdd: function (event) {
+            let output = document.getElementById('imgPreview');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function () {
+                URL.revokeObjectURL(output.src) // очистка
+            }
+            return output.onload;
         }
     }
 })(BillBoard);

@@ -1,9 +1,8 @@
 (function (app) {
     app.User = {
 
-
-        // Регистрация пользователя
-        registerUser: async function () {
+        //Получение данных пользователя для регистрации
+        getRegisterInfo: () => {
 
             let userEmail = document.querySelector('#email').value;
             let userPhone = document.querySelector('#phone').value;
@@ -18,15 +17,23 @@
                 password: userPassword
             };
 
+            if (userPassword !== userConfirmPassword) {
+                alert('Пароли не совпадают');
+                return;
+            }
+
+            return params;
+        },
+
+        // Регистрация пользователя
+        registerUser: async function () {
+
+            let params = app.User.getRegisterInfo();
+
             let settings = {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(params)
-            }
-
-            if (userPassword !== userConfirmPassword) {
-                alert('Пароли не совпадают');
-                return;
             }
 
             try {
@@ -45,15 +52,21 @@
 
         },
 
-        // Вход в систему
-        loginUser: async function () {
+        //Получение данных пользователя для входа в систему
+        getLoginInfo: () => {
             let userEmail = document.querySelector("#userEmail").value;
             let userPassword = document.querySelector('#password_1').value;
 
-            let params = {
+            return {
                 email: userEmail,
                 password: userPassword
             };
+        },
+
+        // Вход в систему
+        loginUser: async function () {
+
+            let params = app.User.getLoginInfo();
 
             let settings = {
                 method: 'POST',
@@ -98,7 +111,6 @@
                 alert('Произошла ошибка:');
             }
         },
-
 
     }
 })(BillBoard);

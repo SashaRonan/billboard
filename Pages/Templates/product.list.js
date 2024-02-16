@@ -17,10 +17,10 @@
             let productImgBox                        = app.Create.div('product_img-box');
             let productImgDiv                        = app.Create.div('product_img');
             let productImg                         = app.Create.img('upload_img_file', 'img_' + productID, productImgSrc);
-            let userPhoneBtn                      = app.Create.buttonWithID('product_button', "buttonID_" + productID, "Показать телефон", app.Functions.show_hide_phone)
+            let userPhoneBtn                      = app.Create.buttonWithID('product_button', "buttonID_" + productID, "Показать телефон", app.ProductList.show_hide_phone)
             let userPhoneShow                  = app.Create.paragraph('user_phone_class', 'userPhone_'+ productID, userPhoneNumber)
 
-            userPhoneShow.addEventListener("click", app.Functions.show_hide_phone);
+            userPhoneShow.addEventListener("click", app.ProductList.show_hide_phone);
 
             productImgDiv.append(productImg);
             productImgBox.append(productImgDiv);
@@ -50,7 +50,28 @@
             content.append(productBlock);
 
             document.body.append(content);
-        }
+        },
+
+        // Показать-скрыть телефон
+        show_hide_phone: function () {
+
+            let numID = this.id.split('_')[1];
+            let button = document.querySelector('#buttonID_' + numID);
+            let phone = document.querySelector('#userPhone_' + numID);
+
+            let phoneDisplay = phone.style.display;
+
+            if (phoneDisplay === 'none') {
+                button.style.display = 'none';
+                phone.style.display = 'inline-flex'
+            } else if (phoneDisplay === '') {
+                button.style.display = 'none';
+                phone.style.display = 'inline-flex'
+            } else {
+                button.style.display = 'block';
+                phone.style.display = 'none';
+            }
+        },
     }
 
 })(BillBoard);
