@@ -1,7 +1,5 @@
 <?php
 
-// Запрос товаров авторизованного пользователя
-
 use objects\Product;
 
 session_start();

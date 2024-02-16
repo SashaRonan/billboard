@@ -35,13 +35,13 @@
             uploadFileSaveBlock.append(uploadFileImg);
             uploadFileBox.append(uploadFileSaveBlock);
 
-            let inputFileLabel              = app.Create.label('upload_button', 'upload_button', 'file_upload', 'Загрузить');
-            let inputFileButton             = app.Create.inputFile('upload_button_input', 'file_upload', app.PageAddAds.loadPreviewAdd);
+            let inputFileLabel               = app.Create.label('upload_button', 'upload_button', 'file_upload', 'Загрузить');
+            let inputFileButton              = app.Create.inputFile('upload_button_input', 'file_upload', app.PageAddAds.loadPreviewAdd);
 
             inputFileLabel.append(inputFileButton);
             uploadFileSaveBlock.append(inputFileLabel)
 
-            let saveFileButton             = app.Create.button('product_button upload_save_button', 'Сохранить', app.Product.addMyProduct)
+            let saveFileButton               = app.Create.button('product_button upload_save_button', 'Сохранить', app.Product.addMyProduct)
 
             uploadFileBox.append(saveFileButton);
             addBlock.append(inputNameBlock);

@@ -111,18 +111,18 @@
 
             // button.classList.add(buttonClass);
             button.textContent = text;
-            button.id= id;
+            button.id = id;
             button.addEventListener("click", clickFunction);
             return button;
         },
 
-        textarea: function (textareaClass, id, cols, rows, placeholder ) {
+        textarea: function (textareaClass, id, cols, rows, placeholder) {
             let textarea = document.createElement('textarea');
             textarea.classList.add(textareaClass);
-            textarea.id= id;
-            textarea.cols= cols;
-            textarea.rows= rows;
-            textarea.placeholder= placeholder;
+            textarea.id = id;
+            textarea.cols = cols;
+            textarea.rows = rows;
+            textarea.placeholder = placeholder;
             return textarea;
         },
 

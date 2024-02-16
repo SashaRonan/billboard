@@ -1,7 +1,5 @@
 <?php
 
-// Добавление нового товара
-
 use objects\Product;
 
 session_start();

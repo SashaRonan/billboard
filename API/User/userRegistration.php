@@ -1,6 +1,5 @@
 <?php
 
-
 if (!session_start()) {
     session_start();
 }
@@ -19,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $userData['email'];
     $password = $userData['password'];
 
-    if (isset($name) && isset($phone) && isset($email) && isset($password) ) {
+    if (isset($name) && isset($phone) && isset($email) && isset($password)) {
         $user->registerUser($name, $email, $phone, $password);
     }
 

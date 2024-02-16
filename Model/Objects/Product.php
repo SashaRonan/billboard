@@ -7,7 +7,7 @@ use Database;
 
 class Product extends Database
 {
-    public function __construct()  // конструктор для соединения с базой данных
+    public function __construct()
     {
         Database::connect();
     }
@@ -82,7 +82,6 @@ class Product extends Database
             move_uploaded_file($_FILES["myProduct"]["tmp_name"], $productImgPath);
         } else {
             $productImg = "img/products/" . $_POST["product_file"];
-            $productImgPath = "../../img/products/" . $_POST["product_file"];
         }
 
         $query = "UPDATE `products` SET `product_name`= ?,`description`= ?,`price`= ?,`product_img`= ? WHERE `product_id` = ?";

@@ -9,12 +9,12 @@ use Database;
 class User extends Database
 {
 
-    public function __construct()  // конструктор для соединения с базой данных
+    public function __construct()
     {
         Database::connect();
     }
 
-    public function userLogin($userEmail, $userPassword) //Авторизация пользователя
+    public function userLogin($userEmail, $userPassword)
     {
         if (empty($userEmail)) {
             echo json_encode(["status" => false, "message" => "Введите почту."]);
@@ -49,13 +49,13 @@ class User extends Database
         echo json_encode(["status" => true, "message" => "Успешная авторизация"]);
     }
 
-    public function LogOut()  //функция для выхода из системы
+    public function LogOut()
     {
         session_destroy();
         echo json_encode(["message" => "Вы вышли из системы."]);
     }
 
-    //Регистрация нового пользователя
+
     public function registerUser(
         $name,
         $email,

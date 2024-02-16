@@ -7,6 +7,7 @@
 
             let fileInput = document.querySelector('#file_upload');
             let files = fileInput.files;
+
             for (let i = 0; i < files.length; i++) {
                 data.append('myProduct', files[i]);
                 data.append("product_name", document.querySelector('#product_name').value);
@@ -85,7 +86,7 @@
         },
 
         // получение данных для сохранения продукта после редактирования
-        getDataForSaveProduct: function(productID) {
+        getDataForSaveProduct: function (productID) {
 
             let productNameID = '#productName_' + productID;
             let productDescriptionID = '#description_' + productID;
@@ -120,7 +121,7 @@
         saveUpdateProduct: async function () {
 
             let productID = this.id.split('_')[1];
-            let  data = app.Product.getDataForSaveProduct(productID);
+            let data = app.Product.getDataForSaveProduct(productID);
 
             let settings = {
                 method: 'POST',
@@ -145,8 +146,6 @@
             } catch (error) {
                 alert("Что-то пошло не так");
             }
-
         },
-
     }
 })(BillBoard);

@@ -2,9 +2,8 @@
 
 class Database
 {
-    private static  $connection;
+    private static $connection;
 
-    // Функция для соединения с БД:
     public static function connect()
     {
         if (empty(self::$connection)) {
@@ -15,7 +14,6 @@ class Database
         return self::$connection;
     }
 
-
     public static function stmtQuery($query, $argTypes, ...$args)
     {
         $stmt = mysqli_prepare(Database::connect(), $query);
@@ -24,25 +22,24 @@ class Database
         return $stmt;
     }
 
-    public static function stmtResult ($stmt) {
+    public static function stmtResult($stmt)
+    {
         return mysqli_stmt_get_result($stmt);
     }
 
-    // Функция для формирования тела запроса БД
     public static function query($sqlString)
     {
         return mysqli_query(self::$connection, $sqlString);
     }
 
-    // Функция для создания ассоциативного массива
     public static function fetch($query)
     {
         return mysqli_fetch_assoc($query);
     }
 
-    public static  function stmtNumRows ($stmt)
+    public static function stmtNumRows($stmt)
     {
-        return mysqli_stmt_affected_rows ($stmt);
+        return mysqli_stmt_affected_rows($stmt);
     }
 
 }

@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-
 (function (app) {
     app.Navigate = {
 
@@ -61,7 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
             catch (error) {
                 alert('Произошла ошибка:');
             }
-
         },
 
         // Переход на основную страницу после авторизации (Страница со всеми товарами)
@@ -114,7 +112,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             let productImgID = "img_" + productID;
 
-
             let productName = document.querySelector('#' + productNameID).textContent;
             let productDescription = document.querySelector('#' + productDescriptionID).textContent;
             let productPrice = document.querySelector('#' + productPriceID).textContent;
@@ -133,8 +130,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     productImgSrc
                 )
             );
-
         },
-
     }
 }(BillBoard));

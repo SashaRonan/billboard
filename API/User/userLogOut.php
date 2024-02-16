@@ -2,7 +2,7 @@
 
 session_start();
 
-require_once ('../../Model/Objects/User.php');
+require_once('../../Model/Objects/User.php');
 
 $user = new objects\User ();
 
