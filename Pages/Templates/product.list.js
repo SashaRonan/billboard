@@ -10,15 +10,23 @@
             productPrice,
             productImgSrc) {
 
+            const imgID = 'img_' + productID;
+            const productButtonID = "buttonID_" + productID;
+            const userPhoneID = 'userPhone_'+ productID;
+            const productNameID ='product_name_'+ productID;
+            const descriptionID = 'description_'+ productID;
+            const userNameID = 'userNameOf_'+ productID;
+
+
             let content                              = app.Create.div("content_product")
 
             let productBlock                         = app.Create.div('product_block');
 
             let productImgBox                        = app.Create.div('product_img-box');
             let productImgDiv                        = app.Create.div('product_img');
-            let productImg                         = app.Create.img('upload_img_file', 'img_' + productID, productImgSrc);
-            let userPhoneBtn                      = app.Create.buttonWithID('product_button', "buttonID_" + productID, "Показать телефон", app.ProductList.show_hide_phone)
-            let userPhoneShow                  = app.Create.paragraph('user_phone_class', 'userPhone_'+ productID, userPhoneNumber)
+            let productImg                           = app.Create.img('upload_img_file', imgID, productImgSrc);
+            let userPhoneBtn                         = app.Create.buttonWithID('product_button', productButtonID, "Показать телефон", app.ProductList.show_hide_phone)
+            let userPhoneShow                        = app.Create.paragraph('user_phone_class', userPhoneID, userPhoneNumber)
 
             userPhoneShow.addEventListener("click", app.ProductList.show_hide_phone);
 
@@ -29,19 +37,19 @@
 
             let productDescriptionBox                 = app.Create.div('product_description-box')
             let productNameDescriptionBox             = app.Create.div('product_name-description-box');
-            let productNameBlock                     = app.Create.header ('product_name','product_name_'+ productID, productName);
-            let productDescriptionBlock              = app.Create.paragraph('product_description','description_'+ productID,  productDescription);
+            let productNameBlock                      = app.Create.header ('product_name', productNameID, productName);
+            let productDescriptionBlock               = app.Create.paragraph('product_description', descriptionID,  productDescription);
 
             productNameDescriptionBox.append(productNameBlock);
             productNameDescriptionBox.append(productDescriptionBlock);
 
-            let userNameBlock                        = app.Create.paragraph('user_name','userNameOf_'+ productID, 'Продавец: ' + userName);
+            let userNameBlock                         = app.Create.paragraph('user_name', userNameID, 'Продавец: ' + userName);
 
             productDescriptionBox.append(productNameDescriptionBox);
             productDescriptionBox.append(userNameBlock);
 
-            let productPriceBlock                    = app.Create.div ('product_price');
-            productPriceBlock.textContent            = productPrice + ' р.'
+            let productPriceBlock                     = app.Create.div ('product_price');
+            productPriceBlock.textContent             = productPrice + ' р.'
 
             productBlock.append(productImgBox);
             productBlock.append(productDescriptionBox);
@@ -56,8 +64,10 @@
         show_hide_phone: function () {
 
             let numID = this.id.split('_')[1];
-            let button = document.querySelector('#buttonID_' + numID);
-            let phone = document.querySelector('#userPhone_' + numID);
+            const buttonID = '#buttonID_' + numID;
+            const userPhoneID = '#userPhone_' + numID;
+            let button = document.querySelector(buttonID);
+            let phone = document.querySelector(userPhoneID);
 
             let phoneDisplay = phone.style.display;
 
